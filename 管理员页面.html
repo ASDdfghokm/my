@@ -1,0 +1,495 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>管理员后台 - 非遗文化</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: "Microsoft Yahei", sans-serif;
+        }
+
+        body {
+            background: #f5f7fa;
+            color: #333;
+        }
+
+        .header {
+            background: white;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            padding: 0.8rem 1rem;
+        }
+
+        .header-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.3rem;
+            font-weight: bold;
+            color: #6a994e;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 1.5rem;
+            align-items: center; /* 新增：让搜索框和导航项垂直对齐 */
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: #555;
+            font-weight: 500;
+        }
+
+        .nav-links a:hover {
+            color: #6a994e;
+        }
+
+        /* 搜索框样式（保持原结构） */
+        .search-container {
+            position: relative;
+            width: 250px; /* 固定搜索框宽度 */
+        }
+        .search-icon {
+            position: absolute;
+            left: 0.8rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #999;
+        }
+        .search-input {
+            width: 100%;
+            padding: 0.5rem 1rem 0.5rem 2.5rem;
+            border-radius: 20px;
+            border: 1px solid #eee;
+            outline: none;
+            font-size: 0.9rem;
+        }
+
+        .auth-buttons {
+            display: flex;
+            gap: 0.8rem;
+        }
+
+        .btn {
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            border: none;
+            cursor: pointer;
+            font-weight: 500;
+            text-decoration: none;
+            display: inline-block;
+            text-align: center;
+        }
+
+        .btn-login {
+            background: transparent;
+            color: #6a994e;
+            border: 1px solid #6a994e;
+        }
+
+        .btn-register {
+            background: #6a994e;
+            color: white;
+        }
+
+        /* 主容器样式调整 */
+        .container {
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 0 1rem;
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .card {
+            background: white;
+            border-radius: 10px;
+            padding: 1.5rem;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            transition: transform 0.3s;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+        }
+
+        .card-title {
+            color: #6a994e;
+            margin-bottom: 1rem;
+            font-size: 1.2rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .card-list {
+            list-style: none;
+        }
+
+        .card-list li {
+            padding: 0.5rem 0;
+            border-bottom: 1px solid #eee;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .card-btn {
+            background: #6a994e;
+            color: white;
+            border: none;
+            padding: 0.3rem 0.8rem;
+            border-radius: 3px;
+            cursor: pointer;
+            font-size: 0.8rem;
+        }
+
+        /* 传承人审核模块专属样式 */
+        .audit-card {
+            background: white;
+            border-radius: 10px;
+            padding: 2rem;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        .audit-title {
+            color: #6a994e;
+            font-size: 1.5rem;
+            margin-bottom: 1.5rem;
+            border-bottom: 2px solid #eee;
+            padding-bottom: 0.8rem;
+        }
+
+        .audit-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .audit-table th, .audit-table td {
+            padding: 1rem;
+            text-align: left;
+            border-bottom: 1px solid #eee;
+        }
+
+        .audit-table th {
+            background: #f8f9fa;
+            color: #555;
+        }
+
+        .pass-btn {
+            background: #6a994e;
+            color: white;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 3px;
+            cursor: pointer;
+            margin-right: 0.5rem;
+        }
+
+        .reject-btn {
+            background: #e63946;
+            color: white;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 3px;
+            cursor: pointer;
+        }
+
+        .no-apply {
+            text-align: center;
+            padding: 2rem;
+            color: #999;
+            font-size: 1rem;
+        }
+
+        .reject-btn {
+            background: #e63946;
+        }
+
+        @media (max-width: 768px) {
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .audit-card {
+                padding: 1rem;
+            }
+
+            .audit-table th, .audit-table td {
+                padding: 0.5rem;
+                font-size: 0.9rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="header-content">
+            <div class="logo">非遗剪纸文化</div>
+            <div class="nav-links">
+                <a href="/html/首页---管理员.html">首页</a >
+                <a href="/html/管理员---关于我们.html">关于我们</a >
+                <a href="/html/管理员---作品展示.html">作品展示</a >
+                <a href="/html/讨论区.html">讨论</a >
+                <a href="/html/管理员页面.html">我</a >
+                <!-- 搜索框（结构不变） -->
+                <div class="search-container">
+                    <span class="search-icon">🔍</span>
+                    <input type="text" class="search-input" placeholder="搜索剪纸、绒花、非遗教程..." id="search-input">
+                </div>
+            </div>
+            <div class="auth-buttons">
+                <a href="/html/index.html" class="btn btn-login">退出登录</a >
+            </div>
+        </div>
+    </header>
+
+    <!-- 主内容区 -->
+    <div class="container">
+        <!-- 数据统计卡片 -->
+        <div class="stats-grid">
+            <div class="card">
+                <h2 class="card-title">📊 社团数据统计</h2>
+                <ul class="card-list">
+                    <li>总用户数 <span id="totalUserCount">0</span></li>
+                    <li>普通用户数 <span id="normalUserCount">0</span></li>
+                    <li>传承人数量 <span id="inheritorCount">0</span></li>
+                    <li>作品总数 <span id="workCount">0</span></li>
+                    <li>讨论总数 <span id="discussionCount">0</span></li>
+                    <li>订单总数 <span id="orderCount">0</span></li>
+                    <li>活动举办次数 <span id="eventCount">0</span></li>
+                </ul>
+            </div>
+
+            <div class="card">
+                <h2 class="card-title">👥 用户管理</h2>
+                <ul class="card-list">
+                    <li>查看所有用户 <button class="card-btn">管理</button></li>
+                    <li>添加管理员 <button class="card-btn">添加</button></li>
+                    <li>审核传承人 <button class="card-btn">审核</button></li>
+                    <li>禁用违规用户 <button class="card-btn">处理</button></li>
+                </ul>
+            </div>
+
+            <div class="card">
+                <h2 class="card-title">🎨 作品管理</h2>
+                <ul class="card-list">
+                    <li>审核作品 <button class="card-btn">审核</button></li>
+                    <li>推荐优秀作品 <button class="card-btn">推荐</button></li>
+                    <li>删除违规作品 <button class="card-btn">删除</button></li>
+                    <li>作品分类管理 <button class="card-btn">分类</button></li>
+                </ul>
+            </div>
+
+            <div class="card">
+                <h2 class="card-title">📅 活动管理</h2>
+                <ul class="card-list">
+                    <li>发布新活动 <button class="card-btn">发布</button></li>
+                    <li>管理活动报名 <button class="card-btn">管理</button></li>
+                    <li>活动成果展示 <button class="card-btn">展示</button></li>
+                    <li>活动经费管理 <button class="card-btn">经费</button></li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- 新增：传承人账号审核专属模块 -->
+        <div class="audit-card">
+            <h2 class="audit-title">🧑‍🏫 民间传承人账号审核</h2>
+            <div id="auditContainer">
+                <!-- 审核列表将通过JS动态生成 -->
+                <div class="no-apply" id="noApplyTip">暂无传承人申请记录</div>
+                <table class="audit-table" id="auditTable" style="display: none;">
+                    <thead>
+                        <tr>
+                            <th>申请用户名</th>
+                            <th>申请时间</th>
+                            <th>操作</th>
+                        </tr>
+                    </thead>
+                    <tbody id="auditTableBody">
+                        <!-- 申请数据行动态生成 -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // 页面加载初始化
+        window.onload = function() {
+            const username = localStorage.getItem('username');
+            const role = localStorage.getItem('role');
+
+            // 权限验证
+            if (!username || !role || role !== 'admin') {
+                alert('请以管理员身份登录！');
+                window.location.href = '登陆.html';
+            } else {
+                document.getElementById('usernameDisplay').textContent = username;
+                updateStats(); // 更新统计数据
+                renderAuditList(); // 渲染审核列表
+            }
+        };
+
+        // 退出登录
+        function logout() {
+            localStorage.removeItem('username');
+            localStorage.removeItem('role');
+            window.location.href = '登陆.html';
+        }
+
+        // 渲染传承人申请审核列表
+        function renderAuditList() {
+            // 从本地存储获取申请记录
+            let applications = JSON.parse(localStorage.getItem('inheritorApplications')) || [];
+            
+            // 只显示待审核的申请
+            const pendingApplications = applications.filter(app => app.status === 'pending');
+            
+            const noApplyTip = document.getElementById('noApplyTip');
+            const auditTable = document.getElementById('auditTable');
+            const auditTableBody = document.getElementById('auditTableBody');
+
+            // 无申请记录时显示提示
+            if (pendingApplications.length === 0) {
+                noApplyTip.style.display = 'block';
+                auditTable.style.display = 'none';
+                return;
+            }
+
+            // 有申请记录时渲染表格
+            noApplyTip.style.display = 'none';
+            auditTable.style.display = 'table';
+            auditTableBody.innerHTML = '';
+
+            pendingApplications.forEach(app => {
+                const tr = document.createElement('tr');
+                tr.innerHTML = `
+                    <td>${app.username}</td>
+                    <td>${app.applicationDate}</td>
+                    <td>
+                        <button class="pass-btn" onclick="passAudit('${app.id}')">通过</button>
+                        <button class="reject-btn" onclick="rejectAudit('${app.id}')">拒绝</button>
+                    </td>
+                `;
+                auditTableBody.appendChild(tr);
+            });
+        }
+
+        // 通过传承人申请
+        function passAudit(applicationId) {
+            // 获取申请记录和传承人列表
+            let applications = JSON.parse(localStorage.getItem('inheritorApplications')) || [];
+            let inheritorAccounts = JSON.parse(localStorage.getItem('inheritorAccounts')) || [];
+            
+            // 查找对应的申请
+            const applicationIndex = applications.findIndex(app => app.id == applicationId);
+            if (applicationIndex === -1) {
+                alert('未找到对应的申请记录！');
+                return;
+            }
+            
+            const application = applications[applicationIndex];
+            
+            // 更新申请状态
+            application.status = 'approved';
+            application.adminId = localStorage.getItem('username');
+            application.processDate = new Date().toISOString().split('T')[0];
+            
+            // 将用户加入传承人列表
+            if (!inheritorAccounts.includes(application.username)) {
+                inheritorAccounts.push(application.username);
+                localStorage.setItem('inheritorAccounts', JSON.stringify(inheritorAccounts));
+            }
+            
+            localStorage.setItem('inheritorApplications', JSON.stringify(applications));
+
+            alert(`已通过【${application.username}】的传承人账号申请！`);
+            renderAuditList();
+            updateInheritorCount();
+        }
+
+        // 拒绝传承人申请
+        function rejectAudit(applicationId) {
+            let applications = JSON.parse(localStorage.getItem('inheritorApplications')) || [];
+            
+            // 查找对应的申请
+            const applicationIndex = applications.findIndex(app => app.id == applicationId);
+            if (applicationIndex === -1) {
+                alert('未找到对应的申请记录！');
+                return;
+            }
+            
+            const application = applications[applicationIndex];
+            
+            // 更新申请状态为拒绝
+            application.status = 'rejected';
+            application.adminId = localStorage.getItem('username');
+            application.processDate = new Date().toISOString().split('T')[0];
+            
+            localStorage.setItem('inheritorApplications', JSON.stringify(applications));
+
+            alert(`已拒绝【${application.username}】的传承人账号申请！`);
+            renderAuditList();
+        }
+
+        // 更新统计信息
+        function updateStats() {
+            // 更新用户统计
+            const users = JSON.parse(localStorage.getItem('users')) || [];
+            const inheritorAccounts = JSON.parse(localStorage.getItem('inheritorAccounts')) || [];
+            
+            const totalUserCount = users.length;
+            const normalUserCount = users.length - inheritorAccounts.length; // 简化计算，实际可能需要更精确的计算
+            
+            document.getElementById('totalUserCount').textContent = totalUserCount;
+            document.getElementById('normalUserCount').textContent = Math.max(0, normalUserCount);
+            document.getElementById('inheritorCount').textContent = inheritorAccounts.length;
+            
+            // 更新作品统计
+            const works = JSON.parse(localStorage.getItem('works')) || [];
+            document.getElementById('workCount').textContent = works.length;
+            
+            // 更新讨论统计
+            const discussions = JSON.parse(localStorage.getItem('discussions')) || [];
+            document.getElementById('discussionCount').textContent = discussions.length;
+            
+            // 更新订单统计
+            const orders = JSON.parse(localStorage.getItem('orders')) || [];
+            document.getElementById('orderCount').textContent = orders.length;
+            
+            // 更新活动统计（假设有活动数据）
+            const events = JSON.parse(localStorage.getItem('events')) || [];
+            document.getElementById('eventCount').textContent = events.length;
+        }
+        
+        // 更新传承人数量统计（保留原有函数以兼容）
+        function updateInheritorCount() {
+            updateStats();
+        }
+        
+        function viewDiscussions() {
+            window.location.href = '讨论区.html';
+        }
+    </script>
+</body>
+</html>

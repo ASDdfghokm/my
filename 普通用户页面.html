@@ -1,0 +1,430 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>用户主页 - 非遗文化</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: "Microsoft Yahei", sans-serif;
+        }
+
+        body {
+            background: #f5f7fa;
+            color: #333;
+        }
+        .header {
+            background: white;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            padding: 0.8rem 1rem;
+        }
+
+        .header-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.3rem;
+            font-weight: bold;
+            color: #6a994e;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 1.5rem;
+            align-items: center; /* 新增：让搜索框和导航项垂直对齐 */
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: #555;
+            font-weight: 500;
+        }
+
+        .nav-links a:hover {
+            color: #6a994e;
+        }
+
+        /* 搜索框样式（保持原结构） */
+        .search-container {
+            position: relative;
+            width: 250px; /* 固定搜索框宽度 */
+        }
+        .search-icon {
+            position: absolute;
+            left: 0.8rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #999;
+        }
+        .search-input {
+            width: 100%;
+            padding: 0.5rem 1rem 0.5rem 2.5rem;
+            border-radius: 20px;
+            border: 1px solid #eee;
+            outline: none;
+            font-size: 0.9rem;
+        }
+
+        .auth-buttons {
+            display: flex;
+            gap: 0.8rem;
+        }
+
+        .btn {
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            border: none;
+            cursor: pointer;
+            font-weight: 500;
+            text-decoration: none;
+            display: inline-block;
+            text-align: center;
+        }
+
+        .btn-login {
+            background: transparent;
+            color: #6a994e;
+            border: 1px solid #6a994e;
+        }
+
+        .btn-register {
+            background: #6a994e;
+            color: white;
+        }
+        .navbar {
+            background: #2a9d8f;
+            color: white;
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .navbar-title {
+            font-size: 1.2rem;
+            font-weight: bold;
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .btn-logout {
+            background: white;
+            color: #2a9d8f;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        .btn-logout:hover {
+            background: #f1f1f1;
+        }
+
+        .banner {
+            width: 100%;
+            height: 200px;
+            background: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url('https://picsum.photos/1200/200');
+            background-size: cover;
+            background-position: center;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            font-size: 2rem;
+            font-weight: bold;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 0 1rem;
+            display: grid;
+            grid-template-columns: 3fr 1fr;
+            gap: 1.5rem;
+        }
+
+        .main-content {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
+        .card {
+            background: white;
+            border-radius: 10px;
+            padding: 1.5rem;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        .card-title {
+            color: #2a9d8f;
+            margin-bottom: 1rem;
+            font-size: 1.2rem;
+            border-bottom: 1px solid #eee;
+            padding-bottom: 0.5rem;
+        }
+
+        .works-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 1rem;
+        }
+
+        .work-item {
+            border: 1px solid #eee;
+            border-radius: 5px;
+            overflow: hidden;
+            transition: transform 0.3s;
+        }
+
+        .work-item:hover {
+            transform: translateY(-5px);
+        }
+
+        .work-img {
+            width: 100%;
+            height: 150px;
+            background: #f1f1f1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: #999;
+        }
+
+        .work-info {
+            padding: 0.5rem;
+        }
+
+        .work-name {
+            font-weight: bold;
+            margin-bottom: 0.2rem;
+        }
+
+        .work-author {
+            font-size: 0.8rem;
+            color: #666;
+        }
+
+        .sidebar {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
+        .sidebar-card {
+            background: white;
+            border-radius: 10px;
+            padding: 1rem;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        .sidebar-title {
+            font-size: 1rem;
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+            color: #2a9d8f;
+        }
+
+        .sidebar-list {
+            list-style: none;
+        }
+
+        .sidebar-list li {
+            padding: 0.3rem 0;
+            border-bottom: 1px solid #eee;
+            font-size: 0.9rem;
+        }
+
+        .btn-join {
+            background: #2a9d8f;
+            color: white;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 5px;
+            cursor: pointer;
+            width: 100%;
+            margin-top: 1rem;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                grid-template-columns: 1fr;
+            }
+
+            .works-grid {
+                grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            }
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="header-content">
+            <div class="logo">非遗剪纸文化</div>
+            <div class="nav-links">
+                <a href="/html/首页---普通用户页面.html">首页</a >
+                <a href="/html/普通用户---关于我们.html">关于我们</a >
+                <a href="/html/普通用户---作品展示.html">作品展示</a >
+                <a href="/html/讨论区.html">讨论</a >
+                <a href="/html/普通用户页面.html">我</a >
+                <!-- 搜索框（结构不变） -->
+                <div class="search-container">
+                    <span class="search-icon">🔍</span>
+                    <input type="text" class="search-input" placeholder="搜索剪纸、绒花、非遗教程..." id="search-input">
+                </div>
+            </div>
+            <div class="auth-buttons">
+                <a href="/html/index.html" class="btn btn-login">退出登录</a >
+            </div>
+        </div>
+    </header>
+
+    <div class="banner">
+        非遗文化 · 传承经典
+    </div>
+
+    <div class="container">
+        <div class="main-content">
+            <div class="card">
+                <h2 class="card-title">推荐非遗作品</h2>
+                <div class="works-grid">
+                    <div class="work-item">
+                        <div class="work-img">
+                            <img src="/img/《西游记》IP剪纸师徒四人/5.jpg" alt="《西游记》">
+                        </div>
+                        <div class="work-info">
+                            <div class="work-name">《西游记》</div>
+                        </div>
+                    </div>
+                    <div class="work-item">
+                        <div class="work-img">
+                            <img src="/img/廉政主题20张/14.png" alt="廉政主题">
+                        </div>
+                        <div class="work-info">
+                            <div class="work-name">廉政主题</div>
+                        </div>
+                    </div>
+                    <div class="work-item">
+                        <div class="work-img">
+                            <img src="/img/爱国主题10张/8.jpg" alt="爱国主题">
+                        </div>
+                        <div class="work-info">
+                            <div class="work-name">爱国主题</div>
+                        </div>
+                    </div>
+                    <div class="work-item">
+                        <div class="work-img">
+                            <img src="/img/向阳花文创/6.png" alt="绒花作品">
+                        </div>
+                        <div class="work-info">
+                            <div class="work-name">绒花作品</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <h2 class="card-title">最新活动</h2>
+                <div style="display: flex; flex-direction: column; gap: 1rem;">
+                    <div style="border-left: 3px solid #2a9d8f; padding-left: 1rem;">
+                        <h3 style="font-size: 1rem;">非遗文化进校园</h3>
+                        <p style="font-size: 0.9rem; color: #666;">时间：2024-10-15 14:00-16:00</p >
+                        <p style="font-size: 0.9rem; color: #666;">地点：南京信息职业技术学院 报告厅</p >
+                        <button style="background: #2a9d8f; color: white; border: none; padding: 0.3rem 0.8rem; border-radius: 3px; cursor: pointer; font-size: 0.8rem; margin-top: 0.5rem;">我要报名</button>
+                    </div>
+                    <div style="border-left: 3px solid #2a9d8f; padding-left: 1rem;">
+                        <h3 style="font-size: 1rem;">非遗作品展览</h3>
+                        <p style="font-size: 0.9rem; color: #666;">时间：2024-11-01 9:00-17:00</p >
+                        <p style="font-size: 0.9rem; color: #666;">地点：学校图书馆 一楼展厅</p >
+                        <button style="background: #2a9d8f; color: white; border: none; padding: 0.3rem 0.8rem; border-radius: 3px; cursor: pointer; font-size: 0.8rem; margin-top: 0.5rem;">我要报名</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="sidebar">
+            <div class="sidebar-card">
+                <div class="sidebar-title">非遗分类</div>
+                <ul class="sidebar-list">
+                    <li>剪纸艺术</li>
+                    <li>绒花制作</li>
+                    <li>竹编工艺</li>
+                    <li>刺绣技艺</li>
+                    <li>木雕艺术</li>
+                </ul>
+            </div>
+
+            <div class="sidebar-card">
+                <div class="sidebar-title">热门传承人</div>
+                <ul class="sidebar-list">
+                    <li>李老师 - 剪纸</li>
+                    <li>王老师 - 绒花</li>
+                    <li>张老师 - 竹编</li>
+                    <li>刘老师 - 刺绣</li>
+                </ul>
+            </div>
+
+            <div class="sidebar-card">
+                <button class="btn-join" onclick="applyToInheritor()">申请成为民间传承人</button>
+            </div>
+            
+            <div class="sidebar-card">
+                <button class="btn-join" onclick="viewOrders()">查看订单</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        window.onload = function() {
+            const username = localStorage.getItem('username');
+            const role = localStorage.getItem('role');
+
+            if (!username || !role || role !== 'user') {
+                alert('请以普通用户身份登录！');
+                window.location.href = '登陆.html';
+            } else {
+                document.getElementById('usernameDisplay').textContent = username;
+            }
+        };
+
+        function logout() {
+            localStorage.removeItem('username');
+            localStorage.removeItem('role');
+            window.location.href = '登陆.html';
+        }
+        
+        function applyToInheritor() {
+            window.location.href = '民间传承人申请页面.html';
+        }
+        
+        function viewOrders() {
+            window.location.href = '订单页面.html';
+        }
+        
+        function viewDiscussions() {
+            window.location.href = '讨论区.html';
+        }
+        
+        function viewWorks() {
+            window.location.href = '作品展示.html';
+        }
+    </script>
+</body>
+</html>

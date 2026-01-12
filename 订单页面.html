@@ -1,0 +1,528 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>订单中心</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: "Microsoft Yahei", sans-serif;
+        }
+
+        body {
+            background: #f5f7fa;
+            color: #333;
+        }
+
+        .navbar {
+            background: #e63946;
+            color: white;
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .navbar-title {
+            font-size: 1.2rem;
+            font-weight: bold;
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .btn-logout {
+            background: white;
+            color: #e63946;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        .btn-logout:hover {
+            background: #f1f1f1;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 0 1rem;
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+        }
+
+        .card {
+            background: white;
+            border-radius: 10px;
+            padding: 1.5rem;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        .card-title {
+            color: #e63946;
+            margin-bottom: 1rem;
+            font-size: 1.2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .btn-add {
+            background: #e63946;
+            color: white;
+            border: none;
+            padding: 0.3rem 0.8rem;
+            border-radius: 3px;
+            cursor: pointer;
+            font-size: 0.8rem;
+        }
+
+        .order-form {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 0.3rem;
+        }
+
+        .form-group label {
+            font-weight: bold;
+            color: #555;
+        }
+
+        .form-group input, .form-group textarea {
+            padding: 0.5rem;
+            border: 1px solid #ddd;
+            border-radius: 3px;
+        }
+
+        .form-group textarea {
+            min-height: 100px;
+            resize: vertical;
+        }
+
+        .btn-submit {
+            background: #e63946;
+            color: white;
+            border: none;
+            padding: 0.8rem;
+            border-radius: 3px;
+            cursor: pointer;
+            margin-top: 1rem;
+            width: 100%;
+        }
+
+        .btn-submit:hover {
+            background: #d90429;
+        }
+
+        .order-list {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .order-item {
+            border: 1px solid #eee;
+            border-radius: 5px;
+            padding: 1rem;
+        }
+
+        .order-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 0.5rem;
+        }
+
+        .order-title {
+            font-weight: bold;
+            font-size: 1.1rem;
+        }
+
+        .order-meta {
+            font-size: 0.8rem;
+            color: #666;
+        }
+
+        .order-description {
+            margin: 0.5rem 0;
+            color: #555;
+        }
+
+        .order-price {
+            color: #e63946;
+            font-weight: bold;
+            margin: 0.5rem 0;
+        }
+
+        .order-actions {
+            display: flex;
+            gap: 0.5rem;
+            margin-top: 0.5rem;
+        }
+
+        .btn-buy, .btn-complete, .btn-cancel {
+            padding: 0.3rem 0.8rem;
+            border: none;
+            border-radius: 3px;
+            cursor: pointer;
+            font-size: 0.8rem;
+        }
+
+        .btn-buy {
+            background: #2a9d8f;
+            color: white;
+        }
+
+        .btn-complete {
+            background: #6a994e;
+            color: white;
+        }
+
+        .btn-cancel {
+            background: #6c757d;
+            color: white;
+        }
+
+        .order-status {
+            padding: 0.2rem 0.5rem;
+            border-radius: 3px;
+            font-size: 0.8rem;
+            color: white;
+        }
+
+        .status-pending { background: #ffc107; color: #333; }
+        .status-accepted { background: #28a745; }
+        .status-completed { background: #17a2b8; }
+        .status-cancelled { background: #6c757d; }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 0 0.5rem;
+            }
+            
+            .order-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 0.3rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="navbar-title">非遗文化 - 订单中心</div>
+        <div class="user-info">
+            <span id="usernameDisplay">用户</span>
+            <button class="btn-logout" onclick="logout()">退出登录</button>
+        </div>
+    </nav>
+
+    <div class="container">
+        <div class="card">
+            <div class="card-title">
+                <span>发起新订单</span>
+            </div>
+            <div class="order-form">
+                <div class="form-group">
+                    <label for="orderTitle">订单标题</label>
+                    <input type="text" id="orderTitle" placeholder="请输入订单标题">
+                </div>
+                <div class="form-group">
+                    <label for="orderDescription">订单描述</label>
+                    <textarea id="orderDescription" placeholder="请详细描述订单需求..."></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="orderPrice">价格</label>
+                    <input type="number" id="orderPrice" placeholder="请输入价格" min="0" step="0.01">
+                </div>
+                <button class="btn-submit" onclick="createOrder()">发布订单</button>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-title">
+                <span>订单列表</span>
+            </div>
+            <div class="order-list" id="orderList">
+                <!-- 订单列表将通过JS动态生成 -->
+                <div id="noOrders" class="no-orders">暂无订单</div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let currentUserRole = '';
+        let currentUsername = '';
+
+        window.onload = function() {
+            currentUsername = localStorage.getItem('username');
+            currentUserRole = localStorage.getItem('role');
+
+            if (!currentUsername || !currentUserRole) {
+                alert('请先登录！');
+                window.location.href = '登陆.html';
+                return;
+            }
+
+            document.getElementById('usernameDisplay').textContent = currentUsername;
+            loadOrders();
+            
+            // 根据用户角色显示/隐藏发布订单表单
+            const orderForm = document.querySelector('.order-form');
+            if(currentUserRole !== 'inheritor' && currentUserRole !== 'admin') {
+                orderForm.style.display = 'none';
+            }
+        };
+
+        function logout() {
+            localStorage.removeItem('username');
+            localStorage.removeItem('role');
+            window.location.href = '登陆.html';
+        }
+
+        function createOrder() {
+            if(currentUserRole !== 'inheritor' && currentUserRole !== 'admin') {
+                alert('只有传承人和管理员可以发起订单！');
+                return;
+            }
+
+            const title = document.getElementById('orderTitle').value;
+            const description = document.getElementById('orderDescription').value;
+            const price = document.getElementById('orderPrice').value;
+
+            if(!title || !description || !price) {
+                alert('请填写完整订单信息！');
+                return;
+            }
+
+            if(price <= 0) {
+                alert('价格必须大于0！');
+                return;
+            }
+
+            const orders = JSON.parse(localStorage.getItem('orders')) || [];
+
+            const newOrder = {
+                id: Date.now(),
+                title: title,
+                description: description,
+                price: parseFloat(price),
+                inheritorId: currentUsername, // 订单发起者
+                userId: '', // 接单用户
+                createTime: new Date().toISOString().split('T')[0],
+                completeTime: '',
+                status: 'pending' // pending, accepted, completed, cancelled
+            };
+
+            orders.push(newOrder);
+            localStorage.setItem('orders', JSON.stringify(orders));
+
+            alert('订单发布成功！');
+            
+            // 清空表单
+            document.getElementById('orderTitle').value = '';
+            document.getElementById('orderDescription').value = '';
+            document.getElementById('orderPrice').value = '';
+            
+            loadOrders();
+        }
+
+        function buyOrder(orderId) {
+            if(currentUserRole !== 'user') {
+                alert('只有普通用户可以接单！');
+                return;
+            }
+
+            const orders = JSON.parse(localStorage.getItem('orders')) || [];
+            const orderIndex = orders.findIndex(order => order.id == orderId);
+
+            if(orderIndex === -1) {
+                alert('订单不存在！');
+                return;
+            }
+
+            if(orders[orderIndex].status !== 'pending') {
+                alert('订单已被接取或已完成！');
+                return;
+            }
+
+            if(orders[orderIndex].inheritorId === currentUsername) {
+                alert('不能接自己发布的订单！');
+                return;
+            }
+
+            // 更新订单状态
+            orders[orderIndex].userId = currentUsername;
+            orders[orderIndex].status = 'accepted';
+
+            localStorage.setItem('orders', JSON.stringify(orders));
+            alert('订单接取成功！');
+            loadOrders();
+        }
+
+        function completeOrder(orderId) {
+            const orders = JSON.parse(localStorage.getItem('orders')) || [];
+            const orderIndex = orders.findIndex(order => order.id == orderId);
+
+            if(orderIndex === -1) {
+                alert('订单不存在！');
+                return;
+            }
+
+            if(orders[orderIndex].inheritorId !== currentUsername) {
+                alert('只有订单发起者可以完成订单！');
+                return;
+            }
+
+            if(orders[orderIndex].status !== 'accepted') {
+                alert('订单状态不是已接取状态！');
+                return;
+            }
+
+            // 更新订单状态
+            orders[orderIndex].status = 'completed';
+            orders[orderIndex].completeTime = new Date().toISOString().split('T')[0];
+
+            localStorage.setItem('orders', JSON.stringify(orders));
+            alert('订单已完成！');
+            loadOrders();
+        }
+
+        function cancelOrder(orderId) {
+            const orders = JSON.parse(localStorage.getItem('orders')) || [];
+            const orderIndex = orders.findIndex(order => order.id == orderId);
+
+            if(orderIndex === -1) {
+                alert('订单不存在！');
+                return;
+            }
+
+            if(orders[orderIndex].inheritorId !== currentUsername) {
+                alert('只有订单发起者可以取消订单！');
+                return;
+            }
+
+            if(orders[orderIndex].status !== 'pending') {
+                alert('订单状态不允许取消！');
+                return;
+            }
+
+            // 更新订单状态
+            orders[orderIndex].status = 'cancelled';
+
+            localStorage.setItem('orders', JSON.stringify(orders));
+            alert('订单已取消！');
+            loadOrders();
+        }
+
+        function loadOrders() {
+            const orders = JSON.parse(localStorage.getItem('orders')) || [];
+            const orderList = document.getElementById('orderList');
+            const noOrders = document.getElementById('noOrders');
+
+            if(orders.length === 0) {
+                noOrders.style.display = 'block';
+                orderList.innerHTML = '<div id="noOrders" class="no-orders">暂无订单</div>';
+                return;
+            }
+
+            noOrders.style.display = 'none';
+            orderList.innerHTML = '';
+
+            // 根据用户角色过滤订单
+            let filteredOrders = [];
+            if(currentUserRole === 'user') {
+                // 普通用户只能看到pending状态的订单
+                filteredOrders = orders.filter(order => order.status === 'pending');
+            } else if(currentUserRole === 'inheritor' || currentUserRole === 'admin') {
+                // 传承人和管理员可以看到自己发起的订单
+                filteredOrders = orders.filter(order => order.inheritorId === currentUsername);
+            } else {
+                filteredOrders = orders;
+            }
+
+            if(filteredOrders.length === 0) {
+                orderList.innerHTML = '<div class="no-orders">暂无符合条件的订单</div>';
+                return;
+            }
+
+            filteredOrders.forEach(order => {
+                const orderItem = document.createElement('div');
+                orderItem.className = 'order-item';
+                
+                let statusClass = '';
+                switch(order.status) {
+                    case 'pending': statusClass = 'status-pending'; break;
+                    case 'accepted': statusClass = 'status-accepted'; break;
+                    case 'completed': statusClass = 'status-completed'; break;
+                    case 'cancelled': statusClass = 'status-cancelled'; break;
+                    default: statusClass = 'status-pending';
+                }
+                
+                orderItem.innerHTML = `
+                    <div class="order-header">
+                        <div class="order-title">${order.title}</div>
+                        <div>
+                            <span class="order-status ${statusClass}">${getStatusText(order.status)}</span>
+                        </div>
+                    </div>
+                    <div class="order-meta">
+                        发起人：${order.inheritorId} | 时间：${order.createTime}
+                        ${order.userId ? `| 接单人：${order.userId}` : ''}
+                        ${order.completeTime ? `| 完成时间：${order.completeTime}` : ''}
+                    </div>
+                    <div class="order-description">${order.description}</div>
+                    <div class="order-price">价格：¥${order.price.toFixed(2)}</div>
+                    <div class="order-actions">
+                        ${renderOrderActions(order)}
+                    </div>
+                `;
+                
+                orderList.appendChild(orderItem);
+            });
+        }
+
+        function getStatusText(status) {
+            switch(status) {
+                case 'pending': return '待接单';
+                case 'accepted': return '已接单';
+                case 'completed': return '已完成';
+                case 'cancelled': return '已取消';
+                default: return status;
+            }
+        }
+
+        function renderOrderActions(order) {
+            let actions = '';
+            
+            if(currentUserRole === 'user' && order.status === 'pending' && order.inheritorId !== currentUsername) {
+                actions += `<button class="btn-buy" onclick="buyOrder(${order.id})">接单</button>`;
+            } else if(currentUserRole === 'inheritor' && order.inheritorId === currentUsername) {
+                if(order.status === 'pending') {
+                    actions += `<button class="btn-cancel" onclick="cancelOrder(${order.id})">取消</button>`;
+                } else if(order.status === 'accepted') {
+                    actions += `<button class="btn-complete" onclick="completeOrder(${order.id})">完成</button>`;
+                }
+            }
+            
+            return actions;
+        }
+    </script>
+</body>
+</html>

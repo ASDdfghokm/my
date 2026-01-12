@@ -1,0 +1,523 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>非遗剪纸文化 - 传承千年的指尖艺术</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: "Microsoft Yahei", sans-serif;
+        }
+
+        body {
+            background: #f5f7fa;
+            color: #333;
+            line-height: 1.6;
+        }
+
+        /* 头部导航 */
+        .header {
+            background: white;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            padding: 0.8rem 1rem;
+        }
+
+        .header-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.3rem;
+            font-weight: bold;
+            color: #6a994e;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 1.5rem;
+            align-items: center;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: #555;
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+
+        .nav-links a:hover, .nav-links a.active {
+            color: #6a994e;
+        }
+
+        .search-container {
+            position: relative;
+            width: 250px;
+        }
+        .search-icon {
+            position: absolute;
+            left: 0.8rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #999;
+        }
+        .search-input {
+            width: 100%;
+            padding: 0.5rem 1rem 0.5rem 2.5rem;
+            border-radius: 20px;
+            border: 1px solid #eee;
+            outline: none;
+            font-size: 0.9rem;
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .btn-logout {
+            background: white;
+            color: #6a994e;
+            border: 1px solid #6a994e;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: all 0.3s;
+        }
+
+        .btn-logout:hover {
+            background: #6a994e;
+            color: white;
+        }
+
+        /* 英雄区 */
+        .hero {
+            background: linear-gradient(rgba(106, 153, 78, 0.9), rgba(106, 153, 78, 0.8)),
+                        url('img/hero-bg.jpg') center/cover;
+            color: white;
+            padding: 6rem 2rem;
+            text-align: center;
+        }
+
+        .hero h1 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            font-weight: bold;
+        }
+
+        .hero p {
+            font-size: 1.2rem;
+            max-width: 1500px;
+            margin: 0 auto 2rem;
+            opacity: 0.95;
+        }
+
+        .btn-primary {
+            background: white;
+            color: #6a994e;
+            padding: 0.8rem 2rem;
+            border-radius: 30px;
+            text-decoration: none;
+            font-weight: 500;
+            display: inline-block;
+            transition: transform 0.3s;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+        }
+
+        /* 内容容器 */
+        .container {
+            max-width: 1200px;
+            margin: 4rem auto;
+            padding: 0 1rem;
+        }
+
+        .section {
+            margin-bottom: 4rem;
+        }
+
+        .section-title {
+            font-size: 2rem;
+            color: #333;
+            margin-bottom: 1.5rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 3px solid #6a994e;
+            display: inline-block;
+        }
+
+        .section-subtitle {
+            font-size: 1.2rem;
+            color: #666;
+            margin-bottom: 2rem;
+        }
+
+        /* 文化介绍 */
+        .culture-intro {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            align-items: center;
+        }
+
+        .culture-text p {
+            margin-bottom: 1.5rem;
+            font-size: 1.05rem;
+        }
+
+        .culture-image img {
+            width: 100%;
+            border-radius: 10px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        }
+
+        /* 特点展示 */
+        .features {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+
+        .feature-card {
+            background: white;
+            padding: 2rem;
+            border-radius: 10px;
+            text-align: center;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            transition: transform 0.3s;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .feature-icon {
+            font-size: 2.5rem;
+            color: #6a994e;
+            margin-bottom: 1rem;
+        }
+
+        .feature-card h3 {
+            color: #333;
+            margin-bottom: 1rem;
+        }
+
+        /* 作品预览 */
+        .preview-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+
+        .preview-card {
+            background: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            transition: transform 0.3s;
+        }
+
+        .preview-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .preview-image {
+            width: 100%;
+            height: 200px;
+            overflow: hidden;
+        }
+
+        .preview-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.3s;
+        }
+
+        .preview-card:hover .preview-image img {
+            transform: scale(1.05);
+        }
+
+        .preview-content {
+            padding: 1rem;
+            text-align: center;
+        }
+
+        .preview-content h4 {
+            margin-bottom: 0.5rem;
+            color: #333;
+        }
+
+        .preview-content p {
+            color: #666;
+            font-size: 0.9rem;
+        }
+
+        /* 页脚 */
+        .footer {
+            background: #333;
+            color: white;
+            padding: 3rem 2rem 1rem;
+            margin-top: 4rem;
+        }
+
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .footer-logo {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #6a994e;
+            margin-bottom: 1rem;
+        }
+
+        .footer-section h4 {
+            margin-bottom: 1rem;
+            color: #6a994e;
+        }
+
+        .footer-links {
+            list-style: none;
+        }
+
+        .footer-links li {
+            margin-bottom: 0.5rem;
+        }
+
+        .footer-links a {
+            color: #ccc;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        .footer-links a:hover {
+            color: #6a994e;
+        }
+
+        .copyright {
+            text-align: center;
+            padding-top: 2rem;
+            border-top: 1px solid #444;
+            color: #888;
+        }
+
+        /* 响应式设计 */
+        @media (max-width: 768px) {
+            .header-content {
+                flex-direction: column;
+                gap: 1rem;
+            }
+
+            .nav-links {
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+
+            .hero h1 {
+                font-size: 2rem;
+            }
+
+            .culture-intro {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="header-content">
+            <div class="logo">非遗剪纸文化</div>
+            <div class="nav-links">
+                <a href="/html/首页---民间传承人.html">首页</a >
+                <a href="/html/民间传承人---关于我们.html">关于我们</a >
+                <a href="/html/民间传承人---作品展示.html">作品展示</a >
+                <a href="/html/讨论区.html">讨论</a >
+                <a href="/html/民间传承人.html">我</a >
+                <div class="search-container">
+                    <span class="search-icon">🔍</span>
+                    <input type="text" class="search-input" placeholder="搜索剪纸、绒花、非遗教程..." id="search-input">
+                </div>
+            </div>
+            <div class="user-info">
+                <span id="usernameDisplay">游客</span>
+                <button class="btn-logout" onclick="logout()">退出登录</button>
+            </div>
+        </div>
+    </header>
+
+    <section class="hero">
+        <h1>传承千年的指尖艺术</h1>
+        <p class="section-subtitle">一把剪刀，一张红纸，在指尖流转间，化作栩栩如生的花鸟鱼虫、戏曲人物，承载着中华民族对生活的热爱与对美好的向往。</p>
+        <a href="/html/管理员---作品展示.html" class="btn-primary">探索剪纸作品</a>
+    </section>
+
+    <div class="container">
+        <section class="section">
+            <h2 class="section-title">剪纸文化的千年传承</h2>
+            <p class="section-subtitle">了解这项国家级非物质文化遗产的历史与魅力</p>
+
+            <div class="culture-intro">
+                <div class="culture-text">
+                    <p>
+                        剪纸是中国最古老的民间艺术之一，其历史可追溯至公元6世纪的南北朝时期。
+                        它以纸张为原料，以剪刀或刻刀为工具，通过剪、刻、撕等手法，创造出丰富多彩的图案。
+                    </p>
+                    <p>
+                        剪纸不仅是一种装饰艺术，更承载着深厚的文化内涵。每逢春节、婚礼等重要节日，
+                        人们都会贴上寓意吉祥的剪纸窗花，表达对美好生活的祈愿。从北方的粗犷豪放，到南方的细腻秀丽，
+                        不同地域的剪纸风格也各具特色，反映了中国民间文化的多样性。
+                    </p>
+                    <p>
+                        如今，剪纸艺术正以新的姿态走进现代生活。它不仅在传统节庆中焕发活力，更在当代艺术、
+                        文创产品中展现出新的生命力，成为连接过去与未来的文化纽带。
+                    </p>
+                </div>
+                <div class="culture-image">
+                    <img src="/img/其他/民族团结.jpg" alt="剪纸文化传承">
+                </div>
+            </div>
+        </section>
+
+        <section class="section">
+            <h2 class="section-title">剪纸艺术的独特魅力</h2>
+            <div class="features">
+                <div class="feature-card">
+                    <div class="feature-icon">🎨</div>
+                    <h3>题材广泛</h3>
+                    <p>从花鸟鱼虫到戏曲人物，从神话传说到生活场景，剪纸题材包罗万象，反映了中国民间的审美情趣。</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">✂️</div>
+                    <h3>技法多样</h3>
+                    <p>包含剪、刻、撕、烧等多种技法，不同工具和手法创造出丰富的视觉效果，展现民间艺人的精湛技艺。</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🔴</div>
+                    <h3>色彩鲜明</h3>
+                    <p>以红色为主色调，象征吉祥喜庆，辅以五彩斑斓的配色，形成独特的视觉冲击力，传递浓厚的节日氛围。</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">📜</div>
+                    <h3>文化承载</h3>
+                    <p>每一幅剪纸作品都蕴含着特定的文化寓意，是中华民族价值观与生活智慧的生动体现。</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="section">
+            <h2 class="section-title">精美作品预览</h2>
+            <p class="section-subtitle">欣赏当代剪纸艺术家的匠心之作</p>
+
+            <div class="preview-grid">
+                <div class="preview-card">
+                    <div class="preview-image">
+                        <img src="/img/其他/金陵十二钗.jpg" alt="金陵十二钗">
+                    </div>
+                    <div class="preview-content">
+                        <h4>金陵十二钗</h4>
+                        <p>以《红楼梦》人物为主题的剪纸作品，细腻刻画了十二位女性的神韵。</p>
+                    </div>
+                </div>
+                <div class="preview-card">
+                    <div class="preview-image">
+                        <img src="/img/其他/百鸟朝凤.jpg" alt="百鸟朝凤">
+                    </div>
+                    <div class="preview-content">
+                        <h4>百鸟朝凤</h4>
+                        <p>传统吉祥图案，象征着太平盛世、百鸟来朝的美好寓意。</p>
+                    </div>
+                </div>
+                <div class="preview-card">
+                    <div class="preview-image">
+                        <img src="/img/南京地标剪纸10款/8.jpg" alt="南京地标">
+                    </div>
+                    <div class="preview-content">
+                        <h4>南京地标</h4>
+                        <p>以南京著名建筑为灵感，展现古都金陵的独特风貌。</p>
+                    </div>
+                </div>
+                <div class="preview-card">
+                    <div class="preview-image">
+                        <img src="/img/向阳花文创/1.jpg" alt="向阳花开">
+                    </div>
+                    <div class="preview-content">
+                        <h4>向阳花开</h4>
+                        <p>以向阳花为主题的文创作品，象征着积极向上的精神风貌。</p>
+                    </div>
+                </div>
+            </div>
+
+            <div style="text-align: center; margin-top: 2rem;">
+                <a href="/html/管理员---作品展示.html" class="btn-primary">查看更多作品</a>
+            </div>
+        </section>
+    </div>
+
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-section">
+                <div class="footer-logo">✂️ 非遗剪纸文化</div>
+                <p>致力于传承与推广中国传统剪纸艺术，让古老的指尖文化在当代焕发新生。</p>
+            </div>
+            <div class="footer-section">
+                <h4>快速链接</h4>
+                <ul class="footer-links">
+                    <li><a href="#">首页</a></li>
+                    <li><a href="/html/管理员---作品展示.html">作品展示</a></li>
+                    <li><a href="#">文化介绍</a></li>
+                    <li><a href="/html/讨论区.html">交流社区</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h4>联系我们</h4>
+                <p>📧 邮箱：papercut@example.com</p>
+                <p>📞 电话：123-4567-8900</p>
+                <p>📍 地址：南京市秦淮区非遗文化产业园</p>
+            </div>
+        </div>
+        <div class="copyright">
+            &copy; 2026 非遗剪纸文化 | 保留所有权利
+        </div>
+    </footer>
+
+    <script>
+        // 用户信息和登出功能
+        let currentUsername = localStorage.getItem('username');
+        if(currentUsername) {
+            document.getElementById('usernameDisplay').textContent = currentUsername;
+        } else {
+            document.getElementById('usernameDisplay').textContent = '游客';
+            document.querySelector('.btn-logout').style.display = 'none';
+        }
+
+        function logout() {
+            localStorage.removeItem('username');
+            localStorage.removeItem('role');
+            window.location.href = 'index.html';
+        }
+    </script>
+</body>
+</html>

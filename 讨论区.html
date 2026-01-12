@@ -1,0 +1,539 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>非遗文化讨论区</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: "Microsoft Yahei", sans-serif;
+        }
+
+        body {
+            background: #f5f7fa;
+            color: #333;
+        }
+
+        .navbar {
+            background: #6a994e;
+            color: white;
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .navbar-title {
+            font-size: 1.2rem;
+            font-weight: bold;
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .btn-logout {
+            background: white;
+            color: #6a994e;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        .btn-logout:hover {
+            background: #f1f1f1;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 2rem auto;
+            padding: 0 1rem;
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
+        .card {
+            background: white;
+            border-radius: 10px;
+            padding: 1.5rem;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        .card-title {
+            color: #6a994e;
+            margin-bottom: 1rem;
+            font-size: 1.2rem;
+        }
+
+        .discussion-form {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 0.3rem;
+        }
+
+        .form-group label {
+            font-weight: bold;
+            color: #555;
+        }
+
+        .form-group input, .form-group textarea {
+            padding: 0.5rem;
+            border: 1px solid #ddd;
+            border-radius: 3px;
+        }
+
+        .form-group textarea {
+            min-height: 100px;
+            resize: vertical;
+        }
+
+        .btn-submit {
+            background: #6a994e;
+            color: white;
+            border: none;
+            padding: 0.8rem;
+            border-radius: 3px;
+            cursor: pointer;
+            margin-top: 1rem;
+            width: 100%;
+        }
+
+        .btn-submit:hover {
+            background: #577d3e;
+        }
+
+        .discussion-list {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
+        .discussion-item {
+            border: 1px solid #eee;
+            border-radius: 5px;
+            padding: 1rem;
+        }
+
+        .discussion-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 0.5rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 1px solid #eee;
+        }
+
+        .discussion-title {
+            font-weight: bold;
+            font-size: 1.1rem;
+        }
+
+        .discussion-author {
+            color: #666;
+            font-size: 0.9rem;
+        }
+
+        .discussion-content {
+            margin: 0.5rem 0;
+            color: #555;
+            line-height: 1.5;
+        }
+
+        .discussion-meta {
+            font-size: 0.8rem;
+            color: #999;
+            margin-bottom: 0.5rem;
+        }
+
+        .discussion-actions {
+            display: flex;
+            gap: 0.5rem;
+            margin-top: 0.5rem;
+        }
+
+        .btn-delete, .btn-reply {
+            padding: 0.3rem 0.8rem;
+            border: none;
+            border-radius: 3px;
+            cursor: pointer;
+            font-size: 0.8rem;
+        }
+
+        .btn-delete {
+            background: #e63946;
+            color: white;
+        }
+
+        .btn-reply {
+            background: #6a994e;
+            color: white;
+        }
+
+        .comments-section {
+            margin-top: 1rem;
+            padding-top: 1rem;
+            border-top: 1px solid #eee;
+        }
+
+        .comment {
+            border-left: 3px solid #6a994e;
+            padding: 0.5rem;
+            margin: 0.5rem 0;
+            background: #f9f9f9;
+        }
+
+        .comment-header {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.8rem;
+            color: #666;
+            margin-bottom: 0.2rem;
+        }
+
+        .comment-content {
+            font-size: 0.9rem;
+        }
+
+        .reply-form {
+            margin-top: 1rem;
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .reply-input {
+            padding: 0.5rem;
+            border: 1px solid #ddd;
+            border-radius: 3px;
+        }
+
+        .btn-reply-submit {
+            background: #6a994e;
+            color: white;
+            border: none;
+            padding: 0.3rem 0.8rem;
+            border-radius: 3px;
+            cursor: pointer;
+            width: fit-content;
+            font-size: 0.8rem;
+        }
+
+        .role-badge {
+            display: inline-block;
+            background: #6a994e;
+            color: white;
+            padding: 0.1rem 0.4rem;
+            border-radius: 3px;
+            font-size: 0.7rem;
+            margin-left: 0.5rem;
+        }
+
+        .admin-badge {
+            background: #e63946;
+        }
+
+        .inheritor-badge {
+            background: #bc6c25;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 0 0.5rem;
+            }
+            
+            .discussion-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 0.3rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="navbar-title">非遗文化社团 - 讨论区</div>
+        <div class="user-info">
+            <span id="usernameDisplay">用户</span>
+            <button class="btn-logout" onclick="logout()">退出登录</button>
+        </div>
+    </nav>
+
+    <div class="container">
+        <div class="card">
+            <h2 class="card-title">发起新讨论</h2>
+            <div class="discussion-form">
+                <div class="form-group">
+                    <label for="discussionTitle">讨论标题</label>
+                    <input type="text" id="discussionTitle" placeholder="请输入讨论标题">
+                </div>
+                <div class="form-group">
+                    <label for="discussionContent">讨论内容</label>
+                    <textarea id="discussionContent" placeholder="请发表您的讨论内容..."></textarea>
+                </div>
+                <button class="btn-submit" onclick="createDiscussion()">发布讨论</button>
+            </div>
+        </div>
+
+        <div class="card">
+            <h2 class="card-title">讨论列表</h2>
+            <div class="discussion-list" id="discussionList">
+                <!-- 讨论列表将通过JS动态生成 -->
+                <div id="noDiscussions" class="no-discussions">暂无讨论</div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let currentUserRole = '';
+        let currentUsername = '';
+
+        window.onload = function() {
+            currentUsername = localStorage.getItem('username');
+            currentUserRole = localStorage.getItem('role');
+
+            if (!currentUsername || !currentUserRole) {
+                alert('请先登录！');
+                window.location.href = 'index.html';
+                return;
+            }
+
+            document.getElementById('usernameDisplay').textContent = currentUsername;
+            loadDiscussions();
+            
+            // 根据用户角色显示/隐藏发布讨论表单
+            const discussionForm = document.querySelector('.discussion-form');
+            if(currentUserRole === 'user') {
+                discussionForm.style.display = 'none';
+            }
+        };
+
+        function logout() {
+            localStorage.removeItem('username');
+            localStorage.removeItem('role');
+            window.location.href = 'index.html';
+        }
+
+        function createDiscussion() {
+            if(currentUserRole !== 'inheritor' && currentUserRole !== 'admin') {
+                alert('只有传承人和管理员可以发起讨论！');
+                return;
+            }
+
+            const title = document.getElementById('discussionTitle').value;
+            const content = document.getElementById('discussionContent').value;
+
+            if(!title || !content) {
+                alert('请填写完整讨论信息！');
+                return;
+            }
+
+            const discussions = JSON.parse(localStorage.getItem('discussions')) || [];
+
+            const newDiscussion = {
+                id: Date.now(),
+                title: title,
+                content: content,
+                userId: currentUsername,
+                role: currentUserRole,
+                createTime: new Date().toISOString().split('T')[0],
+                updateTime: new Date().toISOString().split('T')[0],
+                parentId: null, // 根讨论
+                status: 'active',
+                comments: [] // 子评论
+            };
+
+            discussions.push(newDiscussion);
+            localStorage.setItem('discussions', JSON.stringify(discussions));
+
+            alert('讨论发布成功！');
+            
+            // 清空表单
+            document.getElementById('discussionTitle').value = '';
+            document.getElementById('discussionContent').value = '';
+            
+            loadDiscussions();
+        }
+
+        function deleteDiscussion(discussionId) {
+            const discussions = JSON.parse(localStorage.getItem('discussions')) || [];
+            const discussionIndex = discussions.findIndex(disc => disc.id == discussionId);
+
+            if(discussionIndex === -1) {
+                alert('讨论不存在！');
+                return;
+            }
+
+            const discussion = discussions[discussionIndex];
+            
+            // 检查权限：管理员可以删除所有讨论，传承人只能删除自己的讨论
+            if(currentUserRole === 'admin') {
+                // 管理员可以删除任何讨论
+            } else if(currentUserRole === 'inheritor') {
+                // 传承人只能删除自己的讨论
+                if(discussion.userId !== currentUsername) {
+                    alert('您只能删除自己的讨论！');
+                    return;
+                }
+            } else {
+                alert('您没有权限删除讨论！');
+                return;
+            }
+
+            // 删除讨论
+            discussions.splice(discussionIndex, 1);
+            localStorage.setItem('discussions', JSON.stringify(discussions));
+            
+            alert('讨论已删除！');
+            loadDiscussions();
+        }
+
+        function addComment(discussionId) {
+            if(currentUserRole !== 'user' && currentUserRole !== 'inheritor' && currentUserRole !== 'admin') {
+                alert('请先登录！');
+                return;
+            }
+
+            const commentInput = document.getElementById(`commentInput_${discussionId}`);
+            if(!commentInput.value.trim()) {
+                alert('请输入评论内容！');
+                return;
+            }
+
+            const discussions = JSON.parse(localStorage.getItem('discussions')) || [];
+            const discussionIndex = discussions.findIndex(disc => disc.id == discussionId);
+
+            if(discussionIndex === -1) {
+                alert('讨论不存在！');
+                return;
+            }
+
+            const newComment = {
+                id: Date.now(),
+                userId: currentUsername,
+                role: currentUserRole,
+                content: commentInput.value,
+                createTime: new Date().toISOString().split('T')[0],
+                status: 'active'
+            };
+
+            discussions[discussionIndex].comments.push(newComment);
+            localStorage.setItem('discussions', JSON.stringify(discussions));
+
+            commentInput.value = '';
+            loadDiscussions();
+        }
+
+        function loadDiscussions() {
+            const discussions = JSON.parse(localStorage.getItem('discussions')) || [];
+            const discussionList = document.getElementById('discussionList');
+            const noDiscussions = document.getElementById('noDiscussions');
+
+            if(discussions.length === 0) {
+                noDiscussions.style.display = 'block';
+                discussionList.innerHTML = '<div id="noDiscussions" class="no-discussions">暂无讨论</div>';
+                return;
+            }
+
+            noDiscussions.style.display = 'none';
+            discussionList.innerHTML = '';
+
+            discussions.forEach(discussion => {
+                if(discussion.parentId === null && discussion.status === 'active') { // 只显示根讨论
+                    const discussionItem = document.createElement('div');
+                    discussionItem.className = 'discussion-item';
+                    
+                    // 获取用户角色标签
+                    let roleBadge = '';
+                    if(discussion.role === 'admin') {
+                        roleBadge = '<span class="role-badge admin-badge">管理员</span>';
+                    } else if(discussion.role === 'inheritor') {
+                        roleBadge = '<span class="role-badge inheritor-badge">传承人</span>';
+                    }
+                    
+                    discussionItem.innerHTML = `
+                        <div class="discussion-header">
+                            <div>
+                                <span class="discussion-title">${discussion.title}</span>
+                                ${roleBadge}
+                            </div>
+                            <div class="discussion-author">by ${discussion.userId}</div>
+                        </div>
+                        <div class="discussion-meta">发布时间：${discussion.createTime}</div>
+                        <div class="discussion-content">${discussion.content}</div>
+                        <div class="discussion-actions">
+                            ${renderDiscussionActions(discussion)}
+                        </div>
+                        
+                        <div class="comments-section">
+                            <h4>评论 (${discussion.comments.length})</h4>
+                            <div class="comments-list" id="comments_${discussion.id}">
+                                ${discussion.comments.map(comment => renderComment(comment)).join('')}
+                            </div>
+                            
+                            <div class="reply-form">
+                                <input type="text" class="reply-input" id="commentInput_${discussion.id}" placeholder="发表评论...">
+                                <button class="btn-reply-submit" onclick="addComment(${discussion.id})">评论</button>
+                            </div>
+                        </div>
+                    `;
+                    
+                    discussionList.appendChild(discussionItem);
+                }
+            });
+        }
+
+        function renderDiscussionActions(discussion) {
+            let actions = '';
+            
+            // 管理员可以删除任何讨论
+            if(currentUserRole === 'admin') {
+                actions += `<button class="btn-delete" onclick="deleteDiscussion(${discussion.id})">删除</button>`;
+            }
+            // 传承人可以删除自己的讨论
+            else if(currentUserRole === 'inheritor' && discussion.userId === currentUsername) {
+                actions += `<button class="btn-delete" onclick="deleteDiscussion(${discussion.id})">删除</button>`;
+            }
+            
+            return actions;
+        }
+
+        function renderComment(comment) {
+            // 获取用户角色标签
+            let roleBadge = '';
+            if(comment.role === 'admin') {
+                roleBadge = '<span class="role-badge admin-badge">管理员</span>';
+            } else if(comment.role === 'inheritor') {
+                roleBadge = '<span class="role-badge inheritor-badge">传承人</span>';
+            }
+            
+            return `
+                <div class="comment">
+                    <div class="comment-header">
+                        <div>
+                            <strong>${comment.userId}</strong>
+                            ${roleBadge}
+                        </div>
+                        <div>${comment.createTime}</div>
+                    </div>
+                    <div class="comment-content">${comment.content}</div>
+                </div>
+            `;
+        }
+    </script>
+</body>
+</html>

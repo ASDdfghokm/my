@@ -1,0 +1,579 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>非遗剪纸文化 - 首页</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: "Microsoft Yahei", sans-serif;
+        }
+
+        body {
+            background: #f5f7fa;
+            color: #333;
+        }
+
+        .header {
+            background: white;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            padding: 0.8rem 1rem;
+        }
+
+        .header-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.3rem;
+            font-weight: bold;
+            color: #6a994e;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 1.5rem;
+            align-items: center; /* 新增：让搜索框和导航项垂直对齐 */
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: #555;
+            font-weight: 500;
+        }
+
+        .nav-links a:hover {
+            color: #6a994e;
+        }
+
+        /* 搜索框样式（保持原结构） */
+        .search-container {
+            position: relative;
+            width: 250px; /* 固定搜索框宽度 */
+        }
+        .search-icon {
+            position: absolute;
+            left: 0.8rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #999;
+        }
+        .search-input {
+            width: 100%;
+            padding: 0.5rem 1rem 0.5rem 2.5rem;
+            border-radius: 20px;
+            border: 1px solid #eee;
+            outline: none;
+            font-size: 0.9rem;
+        }
+
+        .auth-buttons {
+            display: flex;
+            gap: 0.8rem;
+        }
+
+        .btn {
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            border: none;
+            cursor: pointer;
+            font-weight: 500;
+            text-decoration: none;
+            display: inline-block;
+            text-align: center;
+        }
+
+        .btn-login {
+            background: transparent;
+            color: #6a994e;
+            border: 1px solid #6a994e;
+        }
+
+        .btn-register {
+            background: #6a994e;
+            color: white;
+        }
+
+        .hero {
+            background: linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)), url('https://picsum.photos/1200/400');
+            background-size: cover;
+            background-position: center;
+            height: 400px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            text-align: center;
+        }
+
+        .hero-content {
+            max-width: 800px;
+            padding: 0 1rem;
+        }
+
+        .hero-title {
+            font-size: 2.5rem;
+             margin-bottom: 1rem;
+        }
+
+        .hero-subtitle {
+            font-size: 1.2rem;
+            margin-bottom: 2rem;
+            opacity: 0.9;
+        }
+
+        .btn-explore {
+            background: #6a994e;
+            color: white;
+            padding: 0.8rem 2rem;
+            border-radius: 30px;
+            font-size: 1rem;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 0 1rem;
+        }
+
+        .section-title {
+            font-size: 1.5rem;
+            color: #333;
+            margin-bottom: 1.5rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid #6a994e;
+        }
+
+        .posts-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .post-card {
+            background: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            transition: transform 0.3s;
+        }
+
+        .post-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .post-image {
+            width: 100%;
+            height: 250px;
+            background: #f0f0f0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: #999;
+            font-size: 0.9rem;
+        }
+
+        .post-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .post-content {
+            padding: 1rem;
+        }
+
+        .post-title {
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+            font-size: 1.1rem;
+        }
+
+        .post-description {
+            color: #666;
+            font-size: 0.9rem;
+            margin-bottom: 0.5rem;
+            line-height: 1.4;
+        }
+
+        .post-meta {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 0.8rem;
+            color: #999;
+        }
+
+        .post-author {
+            font-weight: 500;
+        }
+
+        .post-stats {
+            display: flex;
+            gap: 0.8rem;
+        }
+
+        .stat {
+            display: flex;
+            align-items: center;
+            gap: 0.2rem;
+        }
+
+        .categories {
+            display: flex;
+            gap: 1rem;
+            margin: 1.5rem 0;
+            flex-wrap: wrap;
+        }
+
+        .category {
+            background: white;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            cursor: pointer;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .category.active {
+            background: #6a994e;
+            color: white;
+        }
+
+        .footer {
+            background: #333;
+            color: white;
+            padding: 2rem 0;
+            margin-top: 3rem;
+        }
+
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 1rem;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 2rem;
+        }
+
+        .footer-section h3 {
+            margin-bottom: 1rem;
+            color: #ccc;
+        }
+
+        .footer-section ul {
+            list-style: none;
+        }
+
+        .footer-section ul li {
+            margin-bottom: 0.5rem;
+        }
+
+        .footer-section a {
+            color: #aaa;
+            text-decoration: none;
+        }
+
+        .footer-section a:hover {
+            color: white;
+        }
+
+        /* 搜索结果页面样式 */
+        .search-results {
+            padding: 1rem;
+            max-width: 1200px;
+            margin: 2rem auto;
+            display: none; /* 默认隐藏 */
+        }
+        .search-results h2 {
+            margin-bottom: 1rem;
+            color: #333;
+            font-size: 1.2rem;
+        }
+        .no-results {
+            text-align: center;
+            padding: 3rem 0;
+            color: #999;
+        }
+
+        @media (max-width: 768px) {
+            .hero-title {
+                font-size: 2rem;
+            }
+            
+            .hero-subtitle {
+                font-size: 1rem;
+            }
+            
+            .nav-links {
+                display: none;
+            }
+            
+            .posts-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="header-content">
+            <div class="logo">非遗剪纸文化</div>
+            <div class="nav-links">
+                <a href="/html/首页---管理员.html">首页</a >
+                <a href="/html/管理员---关于我们.html">关于我们</a >
+                <a href="/html/管理员---作品展示.html">作品展示</a >
+                <a href="/html/讨论区.html">讨论</a >
+                <a href="/html/管理员页面.html">我</a >
+                <!-- 搜索框（结构不变） -->
+                <div class="search-container">
+                    <span class="search-icon">🔍</span>
+                    <input type="text" class="search-input" placeholder="搜索剪纸、绒花、非遗教程..." id="search-input">
+                </div>
+            </div>
+            <div class="auth-buttons">
+                <a href="/html/index.html" class="btn btn-login">退出登录</a >
+            </div>
+        </div>
+    </header>
+
+    <section class="hero">
+        <div class="hero-content">
+            <h1 class="hero-title">传承千年剪纸艺术</h1>
+            <p class="hero-subtitle">感受指尖上的非遗文化，体验传统与现代的完美融合</p >
+            <a href="#posts" class="btn-explore">探索精彩作品</a >
+        </div>
+    </section>
+
+    <!-- 搜索结果区域 -->
+    <div class="search-results" id="search-results-area">
+        <h2>搜索结果：<span id="search-keyword"></span></h2>
+        <div class="posts-grid" id="search-results-container"></div>
+        <div class="no-results" id="no-results" style="display: none;">
+            <p>未找到相关作品</p>
+        </div>
+    </div>
+
+    <!-- 原作品区域 -->
+    <div class="container" id="original-posts-area">
+        <div class="categories">
+            <div class="category active">全部</div>
+            <div class="category">爱国主题</div>
+            <div class="category">科教主题</div>
+            <div class="category">廉政主题</div>
+            <div class="category">向阳花文创</div>
+            <div class="category">《西游记》</div>
+            <div class="category">校园建筑</div>
+            <div class="category">南京地标文化</div>
+            <div class="category">如皋地标文化</div>
+        </div>
+
+        <h2 class="section-title">精选作品</h2>
+        <div class="posts-grid" id="posts">
+            <!-- 作品卡片添加data-tags属性，用于搜索匹配 -->
+            <div class="post-card" data-tags="龙凤呈祥 婚庆 吉祥">
+                <div class="post-image">
+                    <img src="/img/爱国主题10张/9.jpg" alt="剪纸作品 - 中国梦">
+                </div>
+                <div class="post-content">
+                    <div class="post-title">中国梦</div>
+                    <div class="post-description">中国梦剪纸里，冲天巨龙搭配林立广厦，搭配灵动孩童，彰显着中国崛起的磅礴伟力，梦想腾飞正当时！</div>
+                    <div class="post-meta">
+                        <div class="post-stats">
+                            <div class="stat">❤️ 1289</div>
+                            <div class="stat">💬 324</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="post-card" data-tags="梅花 报春 坚韧">
+                <div class="post-image">
+                    <img src="/img/如皋长寿地标剪纸/2.jpg" alt="剪纸作品 - 如皋长寿文化">
+                </div>
+                <div class="post-content">
+                    <div class="post-title">如皋长寿文化</div>
+                    <div class="post-description">这幅剪纸以红白色调为主。画面中有手持寿桃、拄杖的寿星，身旁有云朵、山峦。右侧是带钟楼的建筑，下方绽放着两朵大牡丹花。上方配有“长寿之乡 如皋”的文字，整体营造出祥瑞、长寿的氛围。 </div>
+                    <div class="post-meta">
+                        <div class="post-stats">
+                            <div class="stat">❤️ 896</div>
+                            <div class="stat">💬 218</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="post-card" data-tags="十二生肖 动物 传统">
+                <div class="post-image">
+                    <img src="/img/向阳花文创/1.jpg" alt="剪纸作品 - 向阳花">
+                </div>
+                <div class="post-content">
+                    <div class="post-title">向阳花</div>
+                    <div class="post-description">两朵硕大的向日葵插在透明玻璃瓶中，花瓣纹理清晰，叶片舒展。玻璃瓶置于桌台之上，下方隐约可见几本书籍，整体画面简洁明快，以红色为主色调，展现出一种质朴而美好的意境。</div>
+                    <div class="post-meta">
+                        <div class="post-stats">
+                            <div class="stat">❤️ 3205</div>
+                            <div class="stat">💬 742</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="post-card" data-tags="廉政 窗花 时代精神">
+                <div class="post-image">
+                    <img src="/img/廉政主题20张/1.jpg" alt="剪纸作品 - 廉政主题">
+                </div>
+                <div class="post-content">
+                    <div class="post-title">莲洁-廉洁</div>
+                    <div class="post-description">画面中，盛开的荷花、舒展的荷叶与含苞待放的花蕾栩栩如生，象征着纯洁与美好。“廉洁”二字醒目地置于花卉旁，传达出清正廉洁的理念，整体设计简洁且寓意深刻。</div>
+                    <div class="post-meta">
+                        <div class="post-stats">
+                            <div class="stat">❤️ 2156</div>
+                            <div class="stat">💬 431</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="post-card" data-tags="花鸟鱼虫 自然 生机">
+                <div class="post-image">
+                    <img src="/img/校园建筑剪纸4款/1.jpg" alt="剪纸作品 - 花鸟鱼虫">
+                </div>
+                <div class="post-content">
+                    <div class="post-title">校园建筑</div>
+                    <div class="post-description">图案主体为简洁的建筑线条勾勒出的建筑轮廓，形似校园标志性建筑。下方红底区域内白色文字“I ❤️ NJCIT”，其中“❤️”以心形呈现，传达出对南信院的热爱之情。整体设计简约且富有辨识度。</div>
+                    <div class="post-meta">
+                        <div class="post-stats">
+                            <div class="stat">❤️ 1178</div>
+                            <div class="stat">💬 229</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="post-card" data-tags="民间故事 人物 历史文化">
+                <div class="post-image">
+                    <img src="/img/《西游记》IP剪纸师徒四人/5.jpg" alt="剪纸作品 - 人物故事">
+                </div>
+                <div class="post-content">
+                    <div class="post-title">《西游记》</div>
+                    <div class="post-description">这幅剪纸展现了《西游记》中经典的师徒四人形象。唐僧头戴宝冠，身披袈裟，双手合十，神态庄严；孙悟空头戴紧箍，身披战甲，手持金箍棒，神情机警；猪八戒头戴帽子，袒胸露乳，手持钉耙，憨态可掬；沙僧头戴头巾，手持降妖宝杖，面容憨厚。四人造型生动，线条简洁流畅，以剪纸这一传统艺术形式，生动呈现了《西游记》中令人熟知的角色风采。 </div>
+                    <div class="post-meta">
+                        <div class="post-stats">
+                            <div class="stat">❤️ 6142</div>
+                            <div class="stat">💬 726</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-section">
+                <h3>非遗剪纸文化</h3>
+                <p>致力于传承和发扬中国传统剪纸艺术，让更多人了解和喜爱这项非物质文化遗产。</p >
+            </div>
+            <div class="footer-section">
+                <h3>快速链接</h3>
+                <ul>
+                    <li><a href="#">首页</a ></li>
+                    <li><a href="#">关于我们</a ></li>
+                    <li><a href="#">作品展示</a ></li>
+                    <li><a href="#">活动资讯</a ></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h3>联系我们</h3>
+                <ul>
+                    <li><a href="#">在线客服</a ></li>
+                    <li><a href="#">意见反馈</a ></li>
+                    <li><a href="#">合作洽谈</a ></li>
+                    <li><a href="#">加入我们</a ></li>
+                </ul>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // 分类筛选功能
+            const categories = document.querySelectorAll('.category');
+            categories.forEach(category => {
+                category.addEventListener('click', function() {
+                    categories.forEach(cat => cat.classList.remove('active'));
+                    this.classList.add('active');
+                });
+            });
+
+            // 模拟点赞功能
+            document.querySelectorAll('.stat').forEach(stat => {
+                stat.addEventListener('click', function() {
+                    if(this.textContent.includes('❤️')) {
+                        const currentLikes = parseInt(this.textContent.match(/\d+/)[0]);
+                        this.textContent = `❤️ ${currentLikes + 1}`;
+                    }
+                });
+            });
+
+            // 搜索功能实现
+            const searchInput = document.getElementById('search-input');
+            const originalPostsArea = document.getElementById('original-posts-area');
+            const searchResultsArea = document.getElementById('search-results-area');
+            const searchResultsContainer = document.getElementById('search-results-container');
+            const searchKeyword = document.getElementById('search-keyword');
+            const noResults = document.getElementById('no-results');
+            const allPostCards = document.querySelectorAll('.post-card');
+
+            searchInput.addEventListener('keyup', function(e) {
+                const keyword = e.target.value.trim().toLowerCase();
+                
+                // 无关键词时显示原作品区域
+                if (!keyword) {
+                    originalPostsArea.style.display = 'block';
+                    searchResultsArea.style.display = 'none';
+                    return;
+                }
+
+                // 有关键词时筛选作品
+                originalPostsArea.style.display = 'none';
+                searchResultsArea.style.display = 'block';
+                searchKeyword.textContent = keyword;
+                searchResultsContainer.innerHTML = '';
+                noResults.style.display = 'none';
+
+                let hasMatch = false;
+                allPostCards.forEach(card => {
+                    const tags = card.dataset.tags.toLowerCase();
+                    const title = card.querySelector('.post-title').textContent.toLowerCase();
+                    const desc = card.querySelector('.post-description').textContent.toLowerCase();
+                    
+                    // 匹配标签、标题、描述
+                    if (tags.includes(keyword) || title.includes(keyword) || desc.includes(keyword)) {
+                        hasMatch = true;
+                        searchResultsContainer.appendChild(card.cloneNode(true));
+                    }
+                });
+
+                // 无匹配结果时显示提示
+                if (!hasMatch) {
+                    noResults.style.display = 'block';
+                }
+            });
+        });
+    </script>
+</body>
+</html>

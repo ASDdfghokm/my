@@ -1,0 +1,61 @@
+剪纸网页数据库设计
+
+1. 用户表 (users)
+- id: 主键，用户唯一标识
+- username: 用户名（唯一）
+- email: 邮箱
+- password: 密码（加密存储）
+- role: 角色（admin, inheritor, user）
+- joinDate: 注册日期
+- status: 账号状态（active, inactive）
+- approvalDate: 审核通过日期（仅传承人）
+
+2. 作品表 (works)
+- id: 主键
+- userId: 上传用户ID
+- title: 作品标题
+- description: 作品描述
+- mediaUrl: 媒体文件路径（图片/视频）
+- uploadDate: 上传日期
+- clicks: 点击量
+- category: 分类（剪纸类型）
+- status: 状态（active, pending, deleted）
+
+3. 订单表 (orders)
+- id: 主键
+- inheritorId: 传承人ID（发起者）
+- userId: 普通用户ID（购买者）
+- title: 订单标题
+- description: 订单描述
+- price: 价格
+- status: 订单状态（pending, accepted, completed, cancelled）
+- createTime: 创建时间
+- completeTime: 完成时间
+
+4. 讨论表 (discussions)
+- id: 主键
+- userId: 发起人ID
+- title: 讨论标题
+- content: 讨论内容
+- createTime: 创建时间
+- updateTime: 更新时间
+- parentId: 父评论ID（用于回复）
+- status: 状态（active, deleted）
+
+5. 传承人申请表 (inheritor_applications)
+- id: 主键
+- userId: 申请用户ID
+- reason: 申请理由
+- applicationDate: 申请日期
+- status: 申请状态（pending, approved, rejected）
+- adminId: 处理管理员ID
+- processDate: 处理日期
+- processNote: 处理备注
+
+6. 点击统计表 (click_stats)
+- id: 主键
+- targetId: 目标ID（作品ID）
+- targetType: 目标类型（work, discussion等）
+- userId: 点击用户ID（可选，未登录用户可为空）
+- clickTime: 点击时间
+- ip: IP地址

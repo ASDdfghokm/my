@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>传承人主页 - 非遗文化</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: "Microsoft Yahei", sans-serif;
+        }
+
+        body {
+            background: #f5f7fa;
+            color: #333;
+        }
+
+        .header {
+            background: white;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            padding: 0.8rem 1rem;
+        }
+
+        .header-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.3rem;
+            font-weight: bold;
+            color: #6a994e;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 1.5rem;
+            align-items: center; /* 新增：让搜索框和导航项垂直对齐 */
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: #555;
+            font-weight: 500;
+        }
+
+        .nav-links a:hover {
+            color: #6a994e;
+        }
+
+        /* 搜索框样式（保持原结构） */
+        .search-container {
+            position: relative;
+            width: 250px; /* 固定搜索框宽度 */
+        }
+        .search-icon {
+            position: absolute;
+            left: 0.8rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #999;
+        }
+        .search-input {
+            width: 100%;
+            padding: 0.5rem 1rem 0.5rem 2.5rem;
+            border-radius: 20px;
+            border: 1px solid #eee;
+            outline: none;
+            font-size: 0.9rem;
+        }
+
+        .auth-buttons {
+            display: flex;
+            gap: 0.8rem;
+        }
+
+        .btn {
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            border: none;
+            cursor: pointer;
+            font-weight: 500;
+            text-decoration: none;
+            display: inline-block;
+            text-align: center;
+        }
+
+        .btn-login {
+            background: transparent;
+            color: #6a994e;
+            border: 1px solid #6a994e;
+        }
+
+        .btn-register {
+            background: #6a994e;
+            color: white;
+        }
+        .navbar {
+            background: #bc6c25;
+            color: white;
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .navbar-title {
+            font-size: 1.2rem;
+            font-weight: bold;
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .btn-logout {
+            background: white;
+            color: #bc6c25;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        .btn-logout:hover {
+            background: #f1f1f1;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 0 1rem;
+            display: grid;
+            grid-template-columns: 1fr 2fr;
+            gap: 1.5rem;
+        }
+
+        .profile-card {
+            background: white;
+            border-radius: 10px;
+            padding: 1.5rem;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            text-align: center;
+        }
+
+        .profile-avatar {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            background: #bc6c25;
+            margin: 0 auto 1rem;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            font-size: 2rem;
+        }
+
+        .profile-name {
+            font-size: 1.2rem;
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+        }
+
+        .profile-role {
+            color: #bc6c25;
+            margin-bottom: 1rem;
+        }
+
+        .profile-btn {
+            background: #bc6c25;
+            color: white;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 5px;
+            cursor: pointer;
+            width: 100%;
+            margin-top: 0.5rem;
+        }
+
+        .content-card {
+            background: white;
+            border-radius: 10px;
+            padding: 1.5rem;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        .card-title {
+            color: #bc6c25;
+            margin-bottom: 1rem;
+            font-size: 1.2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .btn-add {
+            background: #bc6c25;
+            color: white;
+            border: none;
+            padding: 0.3rem 0.8rem;
+            border-radius: 3px;
+            cursor: pointer;
+            font-size: 0.8rem;
+        }
+
+        .works-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            gap: 1rem;
+        }
+
+        .work-item {
+            border: 1px solid #eee;
+            border-radius: 5px;
+            padding: 0.5rem;
+            text-align: center;
+        }
+
+        .work-img {
+            width: 100%;
+            height: 100px;
+            background: #f1f1f1;
+            border-radius: 3px;
+            margin-bottom: 0.5rem;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: #999;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="header-content">
+            <div class="logo">非遗剪纸文化</div>
+            <div class="nav-links">
+                <a href="/html/首页---民间传承人.html">首页</a >
+                <a href="/html/民间传承人---关于我们.html">关于我们</a >
+                <a href="/html/民间传承人---作品展示.html">作品展示</a >
+                <a href="/html/讨论区.html">讨论</a >
+                <a href="/html/民间传承人.html">我</a >
+                <!-- 搜索框（结构不变） -->
+                <div class="search-container">
+                    <span class="search-icon">🔍</span>
+                    <input type="text" class="search-input" placeholder="搜索剪纸、绒花、非遗教程..." id="search-input">
+                </div>
+            </div>
+            <div class="auth-buttons">
+                <a href="/html/index.html" class="btn btn-login">退出登录</a >
+            </div>
+        </div>
+    </header>
+
+    <div class="container">
+        <div class="profile-card">
+            <div class="profile-avatar">传</div>
+            <div class="profile-name" id="profileName">传承人姓名</div>
+            <div class="profile-role">民间非遗传承人</div>
+            <div class="profile-desc">
+                擅长：剪纸、绒花制作<br>
+                加入时间：2024-09-01<br>
+                作品数：12
+            </div>
+            <button class="profile-btn" onclick="uploadWork()">
+                <a href="/html/作品上传.html"></a>上传作品
+            </button>
+            <button class="profile-btn" onclick="viewOrders()">
+                <a href="/html/订单页面.html"></a>查看我的订单</button>
+            <button class="profile-btn" onclick="viewDiscussions()">
+                <a href="/html/讨论区.html"></a>查看讨论区
+            </button>
+        </div>
+
+        <div class="content-card">
+            <div class="card-title">
+                <button class="profile-btn" onclick="viewOrders()">
+                    <a href="/html/作品上传.html"></a>添加作品</button>
+            </div>
+            <div class="works-grid">
+                <div class="work-item">
+                    <div class="work-img">剪纸</div>
+                    <div class="work-name">廉政窗花</div>
+                </div>
+                <div class="work-item">
+                    <div class="work-img">绒花</div>
+                    <div class="work-name">牡丹发簪</div>
+                </div>
+                <div class="work-item">
+                    <div class="work-img">剪纸</div>
+                    <div class="work-name">爱国主题</div>
+                </div>
+                <div class="work-item">
+                    <div class="work-img">绒花</div>
+                    <div class="work-name">梅花胸针</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="content-card" style="grid-column: 1 / -1;">
+            <div class="card-title">
+                活动报名
+                <button class="btn-add">报名活动</button>
+            </div>
+            <table style="width: 100%; border-collapse: collapse;">
+                <thead>
+                    <tr style="border-bottom: 2px solid #bc6c25;">
+                        <th style="text-align: left; padding: 0.5rem;">活动名称</th>
+                        <th style="text-align: left; padding: 0.5rem;">活动时间</th>
+                        <th style="text-align: left; padding: 0.5rem;">活动地点</th>
+                        <th style="text-align: left; padding: 0.5rem;">状态</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr style="border-bottom: 1px solid #eee;">
+                        <td style="padding: 0.5rem;">非遗文化进校园</td>
+                        <td style="padding: 0.5rem;">2024-10-15</td>
+                        <td style="padding: 0.5rem;">南京信息职业技术学院</td>
+                        <td style="padding: 0.5rem; color: green;">已报名</td>
+                    </tr>
+                    <tr style="border-bottom: 1px solid #eee;">
+                        <td style="padding: 0.5rem;">非遗作品展览</td>
+                        <td style="padding: 0.5rem;">2024-11-01</td>
+                        <td style="padding: 0.5rem;">学校图书馆</td>
+                        <td style="padding: 0.5rem; color: blue;">待审核</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <script>
+        window.onload = function() {
+            const username = localStorage.getItem('username');
+            const role = localStorage.getItem('role');
+
+            if (!username || !role || role !== 'inheritor') {
+                alert('请以传承人身份登录！');
+                window.location.href = '登陆.html';
+            } else {
+                document.getElementById('usernameDisplay').textContent = username;
+                document.getElementById('profileName').textContent = username;
+            }
+        };
+
+        function logout() {
+            localStorage.removeItem('username');
+            localStorage.removeItem('role');
+            window.location.href = '登陆.html';
+        }
+        
+        function viewOrders() {
+            window.location.href = '订单页面.html';
+        }
+        
+        function viewDiscussions() {
+            window.location.href = '讨论区.html';
+        }
+        
+        function uploadWork() {
+            window.location.href = '作品上传.html';
+        }
+    </script>
+</body>
+</html>

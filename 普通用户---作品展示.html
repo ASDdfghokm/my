@@ -1,0 +1,420 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>作品展示</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: "Microsoft Yahei", sans-serif;
+        }
+
+        body {
+            background: #f5f7fa;
+            color: #333;
+        }
+
+        .header {
+            background: white;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            padding: 0.8rem 1rem;
+        }
+
+        .header-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.3rem;
+            font-weight: bold;
+            color: #6a994e;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 1.5rem;
+            align-items: center;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: #555;
+            font-weight: 500;
+        }
+
+        .nav-links a:hover {
+            color: #6a994e;
+        }
+
+        .search-container {
+            position: relative;
+            width: 250px;
+        }
+        .search-icon {
+            position: absolute;
+            left: 0.8rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #999;
+        }
+        .search-input {
+            width: 100%;
+            padding: 0.5rem 1rem 0.5rem 2.5rem;
+            border-radius: 20px;
+            border: 1px solid #eee;
+            outline: none;
+            font-size: 0.9rem;
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .btn-logout {
+            background: white;
+            color: #6a994e;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        .btn-logout:hover {
+            background: #f1f1f1;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 0 1rem;
+        }
+
+        .section-title {
+            font-size: 1.5rem;
+            color: #333;
+            margin-bottom: 1.5rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid #6a994e;
+        }
+
+        .categories {
+            display: flex;
+            gap: 1rem;
+            margin: 1.5rem 0;
+            flex-wrap: wrap;
+        }
+
+        .category {
+            background: white;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            cursor: pointer;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            transition: all 0.3s;
+        }
+
+        .category.active {
+            background: #6a994e;
+            color: white;
+        }
+
+        .works-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .work-card {
+            background: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            transition: transform 0.3s;
+        }
+
+        .work-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .work-image {
+            width: 100%;
+            height: 250px;
+            overflow: hidden;
+        }
+
+        .work-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .work-content {
+            padding: 1rem;
+        }
+
+        .work-title {
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+            font-size: 1.1rem;
+        }
+
+        .work-description {
+            color: #666;
+            font-size: 0.9rem;
+            margin-bottom: 0.5rem;
+            line-height: 1.4;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        .work-meta {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 0.8rem;
+            color: #999;
+        }
+
+        .work-author {
+            font-weight: 500;
+        }
+
+        .work-stats {
+            display: flex;
+            gap: 0.8rem;
+        }
+
+        .stat {
+            display: flex;
+            align-items: center;
+            gap: 0.2rem;
+        }
+
+        .work-category {
+            display: inline-block;
+            background: #e9ecef;
+            color: #495057;
+            padding: 0.1rem 0.4rem;
+            border-radius: 3px;
+            font-size: 0.7rem;
+            margin-top: 0.3rem;
+        }
+
+        .no-works {
+            text-align: center;
+            padding: 3rem;
+            color: #666;
+            font-size: 1.1rem;
+            grid-column: 1 / -1;
+        }
+
+        @media (max-width: 768px) {
+            .works-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="header-content">
+            <div class="logo">非遗剪纸文化</div>
+            <div class="nav-links">
+                <a href="/html/首页---普通用户页面.html">首页</a >
+                <a href="/html/普通用户---关于我们.html">关于我们</a >
+                <a href="/html/普通用户---作品展示.html">作品展示</a >
+                <a href="/html/讨论区.html">讨论</a >
+                <a href="/html/普通用户页面.html">我</a >
+                <div class="search-container">
+                    <span class="search-icon">🔍</span>
+                    <input type="text" class="search-input" placeholder="搜索剪纸、绒花、非遗教程..." id="search-input">
+                </div>
+            </div>
+            <div class="user-info">
+                <span id="usernameDisplay">游客</span>
+                <button class="btn-logout" onclick="logout()">退出登录</button>
+            </div>
+        </div>
+    </header>
+
+    <div class="container">
+        <h2 class="section-title">精美作品展示</h2>
+        
+        <div class="categories">
+            <div class="category active" data-category="all">全部</div>
+            <div class="category" data-category="爱国主题">爱国主题</div>
+            <div class="category" data-category="科教主题">科教主题</div>
+            <div class="category" data-category="廉政主题">廉政主题</div>
+            <div class="category" data-category="向阳花文创">向阳花文创</div>
+            <div class="category" data-category="《西游记》">《西游记》</div>
+            <div class="category" data-category="校园建筑">校园建筑</div>
+            <div class="category" data-category="南京地标文化">南京地标文化</div>
+            <div class="category" data-category="如皋地标文化">如皋地标文化</div>
+            <div class="category" data-category="其他">其他</div>
+        </div>
+
+        <div class="works-grid" id="worksGrid">
+            <!-- 南京地标文化 -->
+            <div class="work-card" data-category="南京地标文化">
+                <div class="work-image">
+                    <img src="/img/南京地标剪纸10款/3.jpg" alt="中国 南京 溧水">
+                </div>
+                <div class="work-content">
+                    <div class="work-title">中国 南京 溧水</div>
+                    <div class="work-description">画面中心是一座高耸的宝塔，塔身层层叠叠，细节精致。塔下坐落着传统建筑，飞檐翘角，古朴典雅。</div>
+                    <div class="work-meta">
+                        <div class="work-author">by admin</div>
+                        <div class="work-stats">
+                            <div class="stat">👁️ 0</div>
+                        </div>
+                    </div>
+                    <div class="work-category">南京地标文化</div>
+                </div>
+            </div>
+
+            <!-- 爱国主题 -->
+            <div class="work-card" data-category="爱国主题">
+                <div class="work-image">
+                    <img src="/img/爱国主题10张/2.jpg" alt="爱国主题/图片（2）">
+                </div>
+                <div class="work-content">
+                    <div class="work-title">红船精神</div>
+                    <div class="work-description">这幅剪纸作品以红色为底，白色线条勾勒形象，画面中一位身着军装的战士身姿挺拔，正奋力吹响冲锋号。</div>
+                    <div class="work-meta">
+                        <div class="work-author">by admin</div>
+                        <div class="work-stats">
+                            <div class="stat">👁️ 0</div>
+                        </div>
+                    </div>
+                    <div class="work-category">爱国主题</div>
+                </div>
+            </div>
+
+            <!-- 校园建筑 -->
+            <div class="work-card" data-category="校园建筑">
+                <div class="work-image">
+                    <img src="/img/校园建筑剪纸4款/1.jpg" alt="校园图书馆">
+                </div>
+                <div class="work-content">
+                    <div class="work-title">校园图书馆</div>
+                    <div class="work-description">以剪纸形式展现了现代化的校园图书馆建筑，线条简洁明快，充满青春气息。</div>
+                    <div class="work-meta">
+                        <div class="work-author">by admin</div>
+                        <div class="work-stats">
+                            <div class="stat">👁️ 0</div>
+                        </div>
+                    </div>
+                    <div class="work-category">校园建筑</div>
+                </div>
+            </div>
+
+            <!-- 《西游记》 -->
+            <div class="work-card" data-category="《西游记》">
+                <div class="work-image">
+                    <img src="/img/《西游记》IP剪纸师徒四人/5.jpg" alt="《西游记》师徒四人">
+                </div>
+                <div class="work-content">
+                    <div class="work-title">《西游记》师徒四人</div>
+                    <div class="work-description">这是一幅以《西游记》师徒四人为主题的剪纸作品。画面中，唐僧头戴五佛冠，身着袈裟，双手合十，神情庄重；孙悟空头戴紧箍，身披战甲，手持金箍棒，英姿飒爽；猪八戒头戴帽饰，袒胸露乳，手持钉耙，憨态可掬；沙僧头戴僧帽，颈挂佛珠，手持降妖宝杖，神情沉稳。整体剪纸线条流畅，形象生动，将师徒四人的特征展现得淋漓尽致，充满了浓郁的传统文化韵味。 </div>
+                    <div class="work-meta">
+                        <div class="work-author">by admin</div>
+                        <div class="work-stats">
+                            <div class="stat">👁️ 0</div>
+                        </div>
+                    </div>
+                    <div class="work-category">《西游记》</div>
+                </div>
+            </div>
+
+            <!-- 廉政主题 -->
+            <div class="work-card" data-category="廉政主题">
+                <div class="work-image">
+                    <img src="/img/廉政主题20张/1.jpg" alt="清廉荷花">
+                </div>
+                <div class="work-content">
+                    <div class="work-title">清廉荷花</div>
+                    <div class="work-description">以荷花为主题，象征廉洁清正，构图简洁寓意深刻。</div>
+                    <div class="work-meta">
+                        <div class="work-author">by admin</div>
+                        <div class="work-stats">
+                            <div class="stat">👁️ 999</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="work-card" data-category="廉政主题">
+                <div class="work-image">
+                    <img src="/img/廉政主题20张/14.png" alt="清廉荷花">
+                </div>
+                <div class="work-content">
+                    <div class="work-title">赤底清风竹韵</div>
+                    <div class="work-description">画面主体为几竿挺拔的竹子，竹叶疏密有致地伸展，尽显生机与灵动。竹子扎根于嶙峋的山石之间，山石线条简洁却有力，勾勒出坚韧的质感。背景为热烈的红色，与白色的竹石形成鲜明对比。画面右侧，“清廉”二字笔力苍劲，点明主题。该图以竹喻人，借竹子的高洁、正直、有节，传递出对清廉品质的赞颂与追求。</div>
+                    <div class="work-meta">
+                        <div class="work-author">by admin</div>
+                        <div class="work-stats">
+                            <div class="stat">👁️ 959</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // 分类筛选功能（保留JS用于切换显示）
+        const categories = document.querySelectorAll('.category');
+        const workCards = document.querySelectorAll('.work-card');
+
+        categories.forEach(category => {
+            category.addEventListener('click', function() {
+                // 更新分类激活状态
+                categories.forEach(cat => cat.classList.remove('active'));
+                this.classList.add('active');
+
+                // 获取当前选中的分类
+                const selectedCategory = this.getAttribute('data-category');
+
+                // 显示/隐藏作品卡片
+                workCards.forEach(card => {
+                    if (selectedCategory === 'all' || card.getAttribute('data-category') === selectedCategory) {
+                        card.style.display = 'block';
+                    } else {
+                        card.style.display = 'none';
+                    }
+                });
+            });
+        });
+
+        // 用户信息和登出功能
+        let currentUsername = localStorage.getItem('username');
+        if(currentUsername) {
+            document.getElementById('usernameDisplay').textContent = currentUsername;
+        } else {
+            document.getElementById('usernameDisplay').textContent = '游客';
+            document.querySelector('.btn-logout').style.display = 'none';
+        }
+
+        function logout() {
+            localStorage.removeItem('username');
+            localStorage.removeItem('role');
+            window.location.href = 'index.html';
+        }
+    </script>
+</body>
+</html>

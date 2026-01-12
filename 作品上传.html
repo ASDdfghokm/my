@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>上传作品</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: "Microsoft Yahei", sans-serif;
+        }
+
+        body {
+            background: #f5f7fa;
+            color: #333;
+        }
+
+        .navbar {
+            background: #bc6c25;
+            color: white;
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .navbar-title {
+            font-size: 1.2rem;
+            font-weight: bold;
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .btn-logout {
+            background: white;
+            color: #bc6c25;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        .btn-logout:hover {
+            background: #f1f1f1;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 2rem auto;
+            padding: 0 1rem;
+        }
+
+        .card {
+            background: white;
+            border-radius: 10px;
+            padding: 2rem;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        .card-title {
+            color: #bc6c25;
+            margin-bottom: 1.5rem;
+            font-size: 1.5rem;
+            text-align: center;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: bold;
+            color: #555;
+        }
+
+        .form-group input,
+        .form-group textarea,
+        .form-group select {
+            width: 100%;
+            padding: 0.8rem;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 1rem;
+        }
+
+        .form-group textarea {
+            min-height: 120px;
+            resize: vertical;
+        }
+
+        .upload-preview {
+            width: 100%;
+            height: 300px;
+            border: 2px dashed #ddd;
+            border-radius: 5px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-bottom: 1rem;
+            overflow: hidden;
+            background: #f9f9f9;
+        }
+
+        .upload-preview img {
+            max-width: 100%;
+            max-height: 100%;
+            display: none;
+        }
+
+        .upload-placeholder {
+            text-align: center;
+            color: #999;
+        }
+
+        .btn-upload {
+            background: #bc6c25;
+            color: white;
+            border: none;
+            padding: 0.8rem 1.5rem;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1rem;
+            width: 100%;
+        }
+
+        .btn-upload:hover {
+            background: #9d5c1f;
+        }
+
+        .file-input-wrapper {
+            position: relative;
+            overflow: hidden;
+            display: inline-block;
+            width: 100%;
+        }
+
+        .file-input-wrapper input[type=file] {
+            position: absolute;
+            left: 0;
+            top: 0;
+            opacity: 0;
+            width: 100%;
+            height: 100%;
+            cursor: pointer;
+        }
+
+        .file-input-button {
+            background: #6a994e;
+            color: white;
+            padding: 0.8rem;
+            border-radius: 5px;
+            text-align: center;
+            cursor: pointer;
+        }
+
+        .file-name {
+            margin-top: 0.5rem;
+            font-size: 0.9rem;
+            color: #666;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 0 0.5rem;
+            }
+            
+            .card {
+                padding: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="navbar-title">非遗文化 - 作品上传</div>
+        <div class="user-info">
+            <span id="usernameDisplay">用户</span>
+            <button class="btn-logout" onclick="logout()">退出登录</button>
+        </div>
+    </nav>
+
+    <div class="container">
+        <div class="card">
+            <h2 class="card-title">上传您的作品</h2>
+            
+            <form id="uploadForm">
+                <div class="form-group">
+                    <label for="workTitle">作品标题</label>
+                    <input type="text" id="workTitle" placeholder="请输入作品标题" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="workDescription">作品描述</label>
+                    <textarea id="workDescription" placeholder="请描述您的作品，包括创作灵感、技法特点等..."></textarea>
+                </div>
+                
+                <div class="form-group">
+                    <label for="workCategory">作品分类</label>
+                    <select id="workCategory" required>
+                        <option value="">请选择分类</option>
+                        <option value="爱国主题">爱国主题</option>
+                        <option value="科教主题">科教主题</option>
+                        <option value="廉政主题">廉政主题</option>
+                        <option value="向阳花文创">向阳花文创</option>
+                        <option value="《西游记》">《西游记》</option>
+                        <option value="校园建筑">校园建筑</option>
+                        <option value="南京地标文化">南京地标文化</option>
+                        <option value="如皋地标文化">如皋地标文化</option>
+                        <option value="其他">其他</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label>作品图片/视频</label>
+                    <div class="upload-preview" id="uploadPreview">
+                        <img id="previewImage" src="" alt="预览图">
+                        <div class="upload-placeholder" id="placeholderText">
+                            <p>点击下方按钮选择文件</p>
+                            <p>支持图片(JPG/PNG)和视频(MP4)</p>
+                        </div>
+                    </div>
+                    
+                    <div class="file-input-wrapper">
+                        <div class="file-input-button">选择文件</div>
+                        <input type="file" id="workMedia" accept="image/*,video/*" onchange="previewFile(event)">
+                    </div>
+                    <div class="file-name" id="fileName">未选择文件</div>
+                </div>
+                
+                <button type="submit" class="btn-upload">上传作品</button>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        let currentUserRole = '';
+        let currentUsername = '';
+
+        window.onload = function() {
+            currentUsername = localStorage.getItem('username');
+            currentUserRole = localStorage.getItem('role');
+
+            if (!currentUsername || !currentUserRole) {
+                alert('请先登录！');
+                window.location.href = 'index.html';
+                return;
+            }
+
+            // 检查用户角色权限
+            if(currentUserRole !== 'inheritor' && currentUserRole !== 'admin') {
+                alert('只有传承人和管理员可以上传作品！');
+                window.location.href = '普通用户页面.html';
+                return;
+            }
+
+            document.getElementById('usernameDisplay').textContent = currentUsername;
+        };
+
+        function logout() {
+            localStorage.removeItem('username');
+            localStorage.removeItem('role');
+            window.location.href = 'index.html';
+        }
+
+        function previewFile(event) {
+            const file = event.target.files[0];
+            const reader = new FileReader();
+            const preview = document.getElementById('previewImage');
+            const placeholder = document.getElementById('placeholderText');
+            const fileNameElement = document.getElementById('fileName');
+
+            if(file) {
+                fileNameElement.textContent = `已选择: ${file.name}`;
+                
+                if(file.type.startsWith('image/')) {
+                    reader.onload = function() {
+                        preview.src = reader.result;
+                        preview.style.display = 'block';
+                        placeholder.style.display = 'none';
+                    }
+                    reader.readAsDataURL(file);
+                } else if(file.type.startsWith('video/')) {
+                    // 对于视频文件，显示通用视频图标
+                    preview.style.display = 'none';
+                    placeholder.innerHTML = '<p>📁</p><p>视频文件</p>';
+                    placeholder.style.display = 'flex';
+                    placeholder.style.flexDirection = 'column';
+                } else {
+                    alert('不支持的文件格式，请上传图片或视频文件！');
+                    event.target.value = '';
+                    fileNameElement.textContent = '未选择文件';
+                    return;
+                }
+            }
+        }
+
+        document.getElementById('uploadForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+
+            const title = document.getElementById('workTitle').value;
+            const description = document.getElementById('workDescription').value;
+            const category = document.getElementById('workCategory').value;
+            const mediaFile = document.getElementById('workMedia').files[0];
+
+            if(!title || !category) {
+                alert('请填写必填项！');
+                return;
+            }
+
+            if(!mediaFile) {
+                alert('请选择要上传的媒体文件！');
+                return;
+            }
+
+            // 获取现有作品列表
+            const works = JSON.parse(localStorage.getItem('works')) || [];
+
+            // 创建新的作品对象
+            const newWork = {
+                id: Date.now(),
+                userId: currentUsername,
+                title: title,
+                description: description || '',
+                mediaType: mediaFile.type.startsWith('image/') ? 'image' : 'video',
+                mediaName: mediaFile.name,
+                uploadDate: new Date().toISOString().split('T')[0],
+                clicks: 0,
+                category: category,
+                status: 'active'
+            };
+
+            // 添加到作品列表
+            works.push(newWork);
+            localStorage.setItem('works', JSON.stringify(works));
+
+            alert('作品上传成功！');
+            
+            // 重置表单
+            document.getElementById('uploadForm').reset();
+            document.getElementById('previewImage').style.display = 'none';
+            document.getElementById('placeholderText').style.display = 'block';
+            document.getElementById('placeholderText').innerHTML = '<p>点击下方按钮选择文件</p><p>支持图片(JPG/PNG)和视频(MP4)</p>';
+            document.getElementById('fileName').textContent = '未选择文件';
+        });
+    </script>
+</body>
+</html>
